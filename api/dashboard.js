@@ -1,4 +1,4 @@
-const { subDays, addDays, isAfter, startOfDay, differenceInCalendarDays } = require('date-fns')
+import { subDays, addDays, isAfter, startOfDay, differenceInCalendarDays } from 'date-fns'
 
 const LOAN_TERMS = {
     DEFAULT_DAYS: 20,
@@ -63,7 +63,7 @@ const loans = [
     { id: 'l-10', clientId: 'c-10', amount: 1000, startDate: subDays(new Date(), 21).toISOString(), termDays: 20, paidDate: null },
 ]
 
-module.exports = (req, res) => {
+export default function (req, res) {
     try {
         const enhancedLoans = loans.map(loan => {
             const client = clients.find(c => c.id === loan.clientId)
@@ -106,6 +106,8 @@ module.exports = (req, res) => {
         }))
     } catch (err) {
         console.error('dashboard api error', err)
-        res.status(500).send('Internal Server Error')
+        // Return error stack in dev environments, otherwise a minimal message
+        const message = (process.env.NODE_ENV === 'production') ? 'Internal Server Error' : String(err && err.stack ? err.stack : err)
+        res.status(500).send(message)
     }
 }
