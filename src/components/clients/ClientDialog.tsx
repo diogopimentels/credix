@@ -77,15 +77,24 @@ export function ClientDialog({ client, onSave, children }: { client?: Client, on
         const method = client ? 'PATCH' : 'POST'
 
         try {
-            await fetch(url, {
+            const res = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataToSendWithoutFiles)
             })
+            
+            if (!res.ok) {
+                const errorText = await res.text()
+                throw new Error(`Request failed with status ${res.status}: ${errorText}`)
+            }
+            
+            const result = await res.json()
+            console.log('Client saved successfully:', result)
             setOpen(false)
             onSave()
         } catch (error) {
             console.error("Failed to save client", error)
+            alert(`Erro ao salvar cliente: ${error instanceof Error ? error.message : String(error)}`)
         } finally {
             setLoading(false)
         }

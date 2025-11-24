@@ -70,7 +70,7 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
         const method = loan ? 'PATCH' : 'POST'
 
         try {
-            await fetch(url, {
+            const res = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -78,14 +78,20 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
                     amount: principalAmount,
                     termDays: parseInt(formData.termDays)
                 })
-            }).then(res => {
-                if (!res.ok) throw new Error(`Failed request ${res.status}`)
-                return res
             })
+            
+            if (!res.ok) {
+                const errorText = await res.text()
+                throw new Error(`Request failed with status ${res.status}: ${errorText}`)
+            }
+            
+            const result = await res.json()
+            console.log('Loan saved successfully:', result)
             setOpen(false)
             onSave()
         } catch (error) {
             console.error("Failed to save loan", error)
+            alert(`Erro ao salvar empréstimo: ${error instanceof Error ? error.message : String(error)}`)
         } finally {
             setLoading(false)
         }
