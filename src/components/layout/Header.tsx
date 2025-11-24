@@ -8,9 +8,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuthStore } from "@/store/authStore"
-import { Menu, User, Bell, Search, Command } from "lucide-react"
+import { Menu, User, Bell, Search } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Input } from "@/components/ui/input"
 
 interface HeaderProps {
     onMenuClick: () => void

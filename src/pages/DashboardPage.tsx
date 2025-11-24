@@ -3,7 +3,7 @@ import { DashboardCards } from "@/components/dashboard/DashboardCards"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
 import { RecentLoans } from "@/components/dashboard/RecentLoans"
 import { AlertsSection } from "@/components/dashboard/AlertsSection"
-import { Card } from "@/components/ui/card"
+ 
 import { PageHeader } from "@/components/ui/PageHeader"
 
 export function DashboardPage() {

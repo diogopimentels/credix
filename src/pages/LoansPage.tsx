@@ -82,7 +82,6 @@ export function LoansPage() {
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState("ALL")
     const [selectedLoan, setSelectedLoan] = useState<Loan | undefined>(undefined)
-    const [dialogOpen, setDialogOpen] = useState(false)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const fetchLoans = () => {
@@ -101,7 +100,6 @@ export function LoansPage() {
 
     const handleEdit = (loan: Loan) => {
         setSelectedLoan(loan)
-        setDialogOpen(true)
     }
 
     const handleDelete = (loan: Loan) => {
@@ -150,7 +148,6 @@ export function LoansPage() {
                         <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
                             onClick={() => {
                                 setSelectedLoan(undefined)
-                                setDialogOpen(true)
                             }}
                         >
                             <Plus className="mr-2 h-4 w-4" />

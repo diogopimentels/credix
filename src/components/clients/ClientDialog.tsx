@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Client } from "@/mocks/handlers"
-import { Plus, Upload, ArrowRight, User } from "lucide-react"
+import { Upload, ArrowRight, User } from "lucide-react"
 import { useState, useEffect } from "react"
 import { UploadDocument } from "./UploadDocument"
 import { UploadVideo } from "./UploadVideo"
@@ -70,9 +70,8 @@ export function ClientDialog({ client, onSave, children }: { client?: Client, on
         setLoading(true)
         // In a real app, you'd use FormData for file uploads
         const dataToSend = { ...formData }
-        // For this mock, we'll just send the metadata
-        delete dataToSend.residenceProof
-        delete dataToSend.clientVideo
+        // For this mock, we'll just send the metadata (omit file fields)
+        const { residenceProof, clientVideo, ...dataToSendWithoutFiles } = dataToSend
         
         const url = client ? `/api/clients/${client.id}` : '/api/clients'
         const method = client ? 'PATCH' : 'POST'
@@ -81,7 +80,7 @@ export function ClientDialog({ client, onSave, children }: { client?: Client, on
             await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend)
+                body: JSON.stringify(dataToSendWithoutFiles)
             })
             setOpen(false)
             onSave()

@@ -4,7 +4,7 @@ import {
     Users,
     Wallet,
     Calendar, // Changed from Settings
-    Menu
+    
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";

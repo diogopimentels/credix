@@ -3,7 +3,7 @@ import { create } from 'zustand';
 interface AuthState {
     isAuthenticated: boolean;
     user: { name: string; role: string; email: string } | null;
-    login: (email: string, pass: string) => void;
+    login: (email: string, pass: string) => boolean;
     logout: () => void;
 }
 

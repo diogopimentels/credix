@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatCurrency, LoanStatus } from "@/utils/calculations"
-import { Download, FileText } from "lucide-react"
+import { FileText } from "lucide-react"
 import { format, getMonth, getYear } from "date-fns"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { EnhancedLoan } from "@/mocks/handlers"

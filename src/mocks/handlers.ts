@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { calculateLoanDetails } from '../utils/calculations';
+import { calculateLoanDetails, LoanStatus } from '../utils/calculations';
 import { subDays } from 'date-fns';
 
 export interface Client {
@@ -26,6 +26,8 @@ export interface EnhancedLoan extends Loan {
     clientName?: string
     status: LoanStatus
     totalAmount: number
+    interestAmount: number
+    fineAmount: number
     dueDate: string
 }
 

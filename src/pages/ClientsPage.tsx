@@ -32,7 +32,6 @@ export function ClientsPage() {
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState("")
     const [selectedClient, setSelectedClient] = useState<Client | undefined>(undefined)
-    const [dialogOpen, setDialogOpen] = useState(false)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const fetchClients = () => {
@@ -51,7 +50,6 @@ export function ClientsPage() {
 
     const handleEdit = (client: Client) => {
         setSelectedClient(client)
-        setDialogOpen(true)
     }
 
     const handleDelete = (client: Client) => {
@@ -97,11 +95,10 @@ export function ClientsPage() {
                     { label: "Clientes" }
                 ]}
                 actions={
-                    <ClientDialog onSave={fetchClients} client={selectedClient}>
+                        <ClientDialog onSave={fetchClients} client={selectedClient}>
                         <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
                             onClick={() => {
                                 setSelectedClient(undefined)
-                                setDialogOpen(true)
                             }}
                         >
                             <Plus className="mr-2 h-4 w-4" />

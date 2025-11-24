@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Loan } from "@/mocks/handlers"
+import { EnhancedLoan } from "@/mocks/handlers"
 import { calculateLoanDetails } from "@/utils/calculations"
 import { format } from "date-fns"
 import { useState } from "react"
@@ -22,7 +22,7 @@ const formatCurrency = (value: number) => {
     }).format(value)
 }
 
-export function PaymentDialog({ loan, onSave, children }: { loan: Loan, onSave: () => void, children: React.ReactNode }) {
+export function PaymentDialog({ loan, onSave, children }: { loan: EnhancedLoan, onSave: () => void, children: React.ReactNode }) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [paidDate, setPaidDate] = useState(format(new Date(), 'yyyy-MM-dd'))
