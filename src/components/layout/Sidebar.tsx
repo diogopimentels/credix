@@ -6,9 +6,10 @@ import {
     Calendar, // Changed from PieChart
     LogOut,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useAuthStore } from "@/store/authStore";
 
 const sidebarItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -20,6 +21,13 @@ const sidebarItems = [
 
 export function Sidebar() {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { logout } = useAuthStore();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
 
     return (
         <div className="flex flex-col h-full bg-card/50 backdrop-blur-xl border-r border-border/50">
@@ -75,7 +83,7 @@ export function Sidebar() {
                         <p className="text-xs text-muted-foreground truncate">admin@credix.com</p>
                     </div>
                 </div>
-                <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors group">
+                <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors group">
                     <LogOut className="w-4 h-4 transition-transform group-hover:scale-90" />
                     Sair
                 </Button>
