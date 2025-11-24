@@ -41,7 +41,7 @@ export function DashboardPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-full overflow-x-hidden">
             <PageHeader
                 title="Dashboard"
                 description="Visão geral da sua carteira de empréstimos e clientes."
@@ -56,7 +56,7 @@ export function DashboardPage() {
 
             <AlertsSection />
 
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-7 max-w-full overflow-x-hidden">
                 <div className="lg:col-span-4">
                     <RevenueChart data={data.revenueChartData} />
                 </div>

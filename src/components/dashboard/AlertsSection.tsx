@@ -43,6 +43,7 @@ export function AlertsSection() {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
+            className="max-w-full overflow-x-hidden"
         >
             <Card className="w-full border-destructive/20 bg-destructive/5 shadow-sm">
                 <CardHeader className="flex flex-row items-center space-y-0 pb-2">

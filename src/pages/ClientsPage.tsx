@@ -124,6 +124,7 @@ export function ClientsPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
+                className="max-w-full overflow-x-hidden"
             >
                 <Card className="border-black/5 dark:border-white/10 bg-card/50 backdrop-blur-xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
                     <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-black/5 dark:border-white/5">
@@ -182,7 +183,7 @@ export function ClientsPage() {
                                             <motion.tr
                                                 key={client.id}
                                                 variants={itemVariants}
-                                                className="group cursor-pointer border-b border-black/5 dark:border-white/5 last:border-0 hover:bg-muted/30 dark:hover:bg-black/20 transition-colors duration-200"
+                                                className="group cursor-pointer border-b border-black/5 dark:border-white/5 last:border-0 hover:bg-muted/30 dark:hover:bg-black/20 transition-colors duration-200 max-w-full"
                                             >
                                                 <TableCell className="pl-6 py-3">
                                                     <div className="h-10 w-10 rounded-full overflow-hidden ring-2 ring-black/5 dark:ring-white/10 group-hover:ring-primary/50 transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-black/10">
@@ -250,7 +251,7 @@ export function ClientsPage() {
                                     <motion.div
                                         key={client.id}
                                         variants={itemVariants}
-                                        className="flex items-center gap-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
+                                        className="flex items-center gap-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors max-w-full overflow-x-hidden"
                                     >
                                         <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-black/5 dark:ring-white/10 shrink-0">
                                             {client.photo ? (

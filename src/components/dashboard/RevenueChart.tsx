@@ -14,9 +14,10 @@ export function RevenueChart({ data }: RevenueChartProps) {
             <CardHeader>
                 <CardTitle>Receita Mensal</CardTitle>
             </CardHeader>
-            <CardContent className="pl-2">
-                <ResponsiveContainer width="100%" height={350}>
-                    <BarChart data={data}>
+            <CardContent className="pl-2 max-w-full overflow-x-hidden">
+                <div className="w-full max-w-full">
+                    <ResponsiveContainer width="100%" height={350}>
+                        <BarChart data={data} margin={{ left: 0, right: 0 }}>
                         <defs>
                             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor={"hsl(var(--chart-primary))"} stopOpacity={0.95} />
@@ -58,6 +59,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                         />
                     </BarChart>
                 </ResponsiveContainer>
+                </div>
             </CardContent>
         </Card>
     )

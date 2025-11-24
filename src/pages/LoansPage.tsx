@@ -173,6 +173,7 @@ export function LoansPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
+                className="max-w-full overflow-x-hidden"
             >
                 <Card className="border-black/5 dark:border-white/10 bg-card/50 backdrop-blur-xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
                     <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-black/5 dark:border-white/5">
@@ -243,7 +244,7 @@ export function LoansPage() {
                                             <motion.tr
                                                 key={loan.id}
                                                 variants={itemVariants}
-                                                className="group hover:bg-muted/30 dark:hover:bg-black/20 border-b border-black/5 dark:border-white/5 last:border-0 cursor-pointer transition-colors duration-200"
+                                                className="group hover:bg-muted/30 dark:hover:bg-black/20 border-b border-black/5 dark:border-white/5 last:border-0 cursor-pointer transition-colors duration-200 max-w-full"
                                             >
                                                 <TableCell className="font-medium group-hover:text-primary transition-colors duration-300 pl-6 py-4">
                                                     <Link to={`/clients/${loan.clientId}`}>{loan.clientName}</Link>
@@ -303,7 +304,7 @@ export function LoansPage() {
                                     <motion.div
                                         key={loan.id}
                                         variants={itemVariants}
-                                        className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
+                                        className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors max-w-full overflow-x-hidden"
                                     >
                                         <div className="flex items-center justify-between mb-3">
                                             <Link to={`/loans/${loan.id}`} className="font-medium text-foreground hover:text-primary transition-colors">
