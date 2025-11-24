@@ -22,6 +22,13 @@ export interface Loan {
     createdAt: string;
 }
 
+export interface EnhancedLoan extends Loan {
+    clientName?: string
+    status: LoanStatus
+    totalAmount: number
+    dueDate: string
+}
+
 // Seed Data
 const clients: Client[] = Array.from({ length: 30 }, (_, i) => ({
     id: `c-${i + 1}`,
@@ -78,6 +85,23 @@ export const handlers = [
         return HttpResponse.json(client);
     }),
 
+    http.patch('/api/clients/:id', async ({ params, request }) => {
+        const updates = await request.json() as Partial<Client>;
+        const clientIndex = dbClients.findIndex(c => c.id === params.id);
+        if (clientIndex === -1) return new HttpResponse(null, { status: 404 });
+
+        dbClients[clientIndex] = { ...dbClients[clientIndex], ...updates };
+        return HttpResponse.json(dbClients[clientIndex]);
+    }),
+
+    http.delete('/api/clients/:id', ({ params }) => {
+        const clientIndex = dbClients.findIndex(c => c.id === params.id);
+        if (clientIndex === -1) return new HttpResponse(null, { status: 404 });
+
+        dbClients.splice(clientIndex, 1);
+        return new HttpResponse(null, { status: 204 });
+    }),
+
     // Loans
     http.get('/api/loans', () => {
         // Enhance loans with calculated details
@@ -107,6 +131,23 @@ export const handlers = [
         const client = dbClients.find(c => c.id === loan.clientId);
         const details = calculateLoanDetails(loan.amount, loan.startDate, loan.paidDate, loan.termDays);
         return HttpResponse.json({ ...loan, client, ...details });
+    }),
+
+    http.patch('/api/loans/:id', async ({ params, request }) => {
+        const updates = await request.json() as Partial<Loan>;
+        const loanIndex = dbLoans.findIndex(l => l.id === params.id);
+        if (loanIndex === -1) return new HttpResponse(null, { status: 404 });
+
+        dbLoans[loanIndex] = { ...dbLoans[loanIndex], ...updates };
+        return HttpResponse.json(dbLoans[loanIndex]);
+    }),
+
+    http.delete('/api/loans/:id', ({ params }) => {
+        const loanIndex = dbLoans.findIndex(l => l.id === params.id);
+        if (loanIndex === -1) return new HttpResponse(null, { status: 404 });
+
+        dbLoans.splice(loanIndex, 1);
+        return new HttpResponse(null, { status: 204 });
     }),
 
     http.patch('/api/loans/:id/pay', async ({ params, request }) => {

@@ -28,14 +28,14 @@ export function Header({ onMenuClick }: HeaderProps) {
                     </Button>
 
                     {/* Desktop Search Bar */}
-                    <div className="hidden md:flex items-center relative max-w-md w-full">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
+                    <div className="hidden md:flex items-center gap-2 rounded-md border border-border/60 bg-background/70 px-3 h-10 w-[300px] focus-within:border-primary/80 focus-within:ring-1 focus-within:ring-ring transition-all duration-300">
+                        <Search className="h-4 w-4 text-muted-foreground" />
+                        <input
                             placeholder="Buscar..."
-                            className="pl-10 h-10 w-[300px] bg-secondary/50 border-transparent focus:bg-background focus:border-primary/50 transition-all duration-300"
+                            className="flex-1 bg-transparent text-sm placeholder:text-muted-foreground focus:outline-none"
                         />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                            <span className="text-[10px] font-medium text-muted-foreground bg-background/50 px-1.5 py-0.5 rounded border border-border">⌘K</span>
+                        <div className="flex items-center gap-1">
+                            <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded border border-border">⌘K</span>
                         </div>
                     </div>
                 </div>

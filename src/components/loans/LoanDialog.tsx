@@ -11,12 +11,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Calculator } from "lucide-react"
+import { Plus, ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
-import { formatCurrency } from "@/utils/calculations"
-import { Client } from "@/mocks/handlers"
+import { Client, Loan } from "@/mocks/handlers"
+import { format } from "date-fns"
+import { SimulationBox } from "./SimulationBox"
 
-export function LoanDialog({ onLoanAdded }: { onLoanAdded?: () => void }) {
+export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: () => void, children: React.ReactNode }) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [clients, setClients] = useState<Client[]>([])
@@ -24,7 +25,7 @@ export function LoanDialog({ onLoanAdded }: { onLoanAdded?: () => void }) {
         clientId: "",
         amount: "",
         termDays: "20",
-        startDate: new Date().toISOString().split('T')[0]
+        startDate: format(new Date(), 'yyyy-MM-dd')
     })
 
     useEffect(() => {
@@ -35,32 +36,47 @@ export function LoanDialog({ onLoanAdded }: { onLoanAdded?: () => void }) {
         }
     }, [open])
 
-    const calculateTotal = () => {
-        const amount = parseFloat(formData.amount) || 0
-        const interest = amount * 0.40
-        return amount + interest
-    }
-
-    const handleSave = async () => {
-        setLoading(true)
-        try {
-            await fetch('/api/loans', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    amount: parseFloat(formData.amount),
-                    termDays: parseInt(formData.termDays)
-                })
+    useEffect(() => {
+        if (loan) {
+            setFormData({
+                clientId: loan.clientId,
+                amount: String(loan.amount),
+                termDays: String(loan.termDays),
+                startDate: format(new Date(loan.startDate), 'yyyy-MM-dd')
             })
-            setOpen(false)
+        } else {
             setFormData({
                 clientId: "",
                 amount: "",
                 termDays: "20",
-                startDate: new Date().toISOString().split('T')[0]
+                startDate: format(new Date(), 'yyyy-MM-dd')
             })
-            if (onLoanAdded) onLoanAdded()
+        }
+    }, [loan, open])
+
+    const principalAmount = parseFloat(formData.amount) || 0
+    const interestRate = 0.40 // 40%
+    const totalAmount = principalAmount * (1 + interestRate)
+
+    const isFormValid = formData.clientId && principalAmount > 0 && formData.startDate && formData.termDays
+
+    const handleSave = async () => {
+        setLoading(true)
+        const url = loan ? `/api/loans/${loan.id}` : '/api/loans'
+        const method = loan ? 'PATCH' : 'POST'
+
+        try {
+            await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    amount: principalAmount,
+                    termDays: parseInt(formData.termDays)
+                })
+            })
+            setOpen(false)
+            onSave()
         } catch (error) {
             console.error("Failed to save loan", error)
         } finally {
@@ -71,88 +87,71 @@ export function LoanDialog({ onLoanAdded }: { onLoanAdded?: () => void }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Novo Empréstimo
-                </Button>
+                {children}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-card/95 backdrop-blur-xl border-white/10">
-                <DialogHeader>
-                    <DialogTitle>Novo Empréstimo</DialogTitle>
+            <DialogContent className="sm:max-w-lg p-0">
+                <DialogHeader className="p-6 pb-4">
+                    <DialogTitle>{loan ? "Editar Empréstimo" : "Novo Empréstimo"}</DialogTitle>
                     <DialogDescription>
-                        Crie um novo empréstimo. Os juros são calculados automaticamente (40%).
+                        {loan ? "Atualize os detalhes do empréstimo." : "Crie um novo empréstimo com juros de 40%."}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="client" className="text-right">
-                            Cliente
-                        </Label>
+                <div className="flex flex-col gap-5 px-6 pb-6 overflow-y-auto max-h-[70vh]">
+                    <div className="space-y-2">
+                        <Label htmlFor="client">Cliente</Label>
                         <Select
                             value={formData.clientId}
                             onValueChange={(value) => setFormData({ ...formData, clientId: value })}
+                            disabled={!!loan}
                         >
-                            <SelectTrigger className="col-span-3 bg-background/50">
+                            <SelectTrigger id="client">
                                 <SelectValue placeholder="Selecione um cliente" />
                             </SelectTrigger>
-                            <SelectContent className="bg-card border-white/10">
+                            <SelectContent>
                                 {clients.map(client => (
                                     <SelectItem key={client.id} value={client.id}>{client.name}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="amount" className="text-right">
-                            Valor (R$)
-                        </Label>
-                        <Input
-                            id="amount"
-                            type="number"
-                            value={formData.amount}
-                            onChange={e => setFormData({ ...formData, amount: e.target.value })}
-                            placeholder="1000.00"
-                            className="col-span-3 bg-background/50"
-                        />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="amount">Valor (R$)</Label>
+                            <Input
+                                id="amount"
+                                type="number"
+                                value={formData.amount}
+                                onChange={e => setFormData({ ...formData, amount: e.target.value })}
+                                placeholder="1000.00"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="date">Data Início</Label>
+                            <Input
+                                id="date"
+                                type="date"
+                                value={formData.startDate}
+                                onChange={e => setFormData({ ...formData, startDate: e.target.value })}
+                            />
+                        </div>
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="date" className="text-right">
-                            Data Início
-                        </Label>
-                        <Input
-                            id="date"
-                            type="date"
-                            value={formData.startDate}
-                            onChange={e => setFormData({ ...formData, startDate: e.target.value })}
-                            className="col-span-3 bg-background/50"
-                        />
-                    </div>
+                    
+                    {principalAmount > 0 &&
+                        <SimulationBox amount={principalAmount} total={totalAmount} interestRate={interestRate} />
+                    }
 
-                    {/* Calculation Preview */}
-                    <div className="col-span-4 bg-muted/30 rounded-lg p-4 border border-white/5 space-y-2">
-                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-2">
-                            <Calculator className="h-4 w-4" />
-                            Simulação
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Valor Principal:</span>
-                            <span>{formatCurrency(parseFloat(formData.amount) || 0)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span>Juros (40%):</span>
-                            <span className="text-destructive font-medium">
-                                + {formatCurrency((parseFloat(formData.amount) || 0) * 0.40)}
-                            </span>
-                        </div>
-                        <div className="border-t border-white/10 my-2 pt-2 flex justify-between font-bold text-lg">
-                            <span>Total a Receber:</span>
-                            <span className="text-primary">{formatCurrency(calculateTotal())}</span>
-                        </div>
-                    </div>
                 </div>
-                <DialogFooter>
-                    <Button type="submit" onClick={handleSave} disabled={loading || !formData.clientId || !formData.amount}>
-                        {loading ? "Criando..." : "Criar Empréstimo"}
+                <DialogFooter className="bg-muted/30 p-6 flex flex-row sm:justify-between items-center">
+                     <p className="text-sm text-muted-foreground hidden sm:block">Verifique os dados antes de salvar.</p>
+                    <Button
+                        type="submit"
+                        onClick={handleSave}
+                        disabled={loading || !isFormValid}
+                        size="lg"
+                        className="w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                    >
+                        {loading ? "Salvando..." : (loan ? "Salvar Alterações" : "Criar Empréstimo")}
+                        {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                     </Button>
                 </DialogFooter>
             </DialogContent>

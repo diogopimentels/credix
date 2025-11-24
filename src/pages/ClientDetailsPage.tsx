@@ -42,11 +42,38 @@ export function ClientDetailsPage() {
 
     if (loading) {
         return (
-            <div className="space-y-8 animate-pulse">
-                <div className="h-24 w-full bg-muted rounded-xl" />
+            <div className="space-y-8">
+                <div className="h-12 w-1/3 bg-muted rounded-lg animate-pulse mb-8" />
                 <div className="grid gap-6 md:grid-cols-3">
-                    <div className="h-96 bg-muted rounded-xl" />
-                    <div className="col-span-2 h-96 bg-muted rounded-xl" />
+                    <Card className="md:col-span-1 h-fit border-muted/60 bg-card/50 backdrop-blur-sm shadow-soft">
+                        <CardHeader><div className="h-6 w-3/4 bg-muted rounded animate-pulse" /></CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="flex justify-center">
+                                <div className="h-32 w-32 rounded-full bg-muted animate-pulse" />
+                            </div>
+                            <div className="space-y-4">
+                                <div className="h-10 w-full bg-muted rounded-lg animate-pulse" />
+                                <div className="h-10 w-full bg-muted rounded-lg animate-pulse" />
+                                <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
+                            </div>
+                            <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
+                        </CardContent>
+                    </Card>
+
+                    <Card className="md:col-span-2 border-muted/60 bg-card/50 backdrop-blur-sm shadow-soft">
+                        <CardHeader><div className="h-6 w-1/2 bg-muted rounded animate-pulse" /></CardHeader>
+                        <CardContent className="space-y-4">
+                            {Array.from({ length: 3 }).map((_, i) => (
+                                <div key={i} className="flex items-center justify-between p-2">
+                                    <div>
+                                        <div className="h-6 w-32 bg-muted rounded animate-pulse" />
+                                        <div className="h-4 w-48 bg-muted rounded mt-2 animate-pulse" />
+                                    </div>
+                                    <div className="h-8 w-20 bg-muted rounded-full animate-pulse" />
+                                </div>
+                            ))}
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         )

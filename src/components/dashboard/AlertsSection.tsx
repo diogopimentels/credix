@@ -6,6 +6,22 @@ import { AlertTriangle, BellRing } from "lucide-react"
 import { Link } from "react-router-dom"
 import { formatCurrency } from "@/utils/calculations"
 import { format } from "date-fns"
+import { motion } from "framer-motion"
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+}
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+}
 
 export function AlertsSection() {
     const [alerts, setAlerts] = useState<any[]>([])
@@ -19,49 +35,59 @@ export function AlertsSection() {
     if (alerts.length === 0) return null
 
     return (
-        <Card className="w-full border-destructive/20 bg-destructive/5 shadow-sm">
-            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                <div className="flex items-center gap-2">
-                    <BellRing className="h-5 w-5 text-destructive" />
-                    <CardTitle className="text-lg font-semibold text-destructive">Alertas de Cobrança</CardTitle>
-                </div>
-                <Badge variant="destructive" className="ml-auto">
-                    {alerts.length} pendências
-                </Badge>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4 mt-4">
-                    {alerts.slice(0, 3).map((alert) => (
-                        <div key={alert.id} className="flex items-center justify-between bg-background p-4 rounded-lg border shadow-sm">
-                            <div className="flex items-center gap-4">
-                                <div className="p-2 bg-destructive/10 rounded-full">
-                                    <AlertTriangle className="h-4 w-4 text-destructive" />
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+        >
+            <Card className="w-full border-destructive/20 bg-destructive/5 shadow-sm">
+                <CardHeader className="flex flex-row items-center space-y-0 pb-2">
+                    <div className="flex items-center gap-2">
+                        <BellRing className="h-5 w-5 text-destructive" />
+                        <CardTitle className="text-lg font-semibold text-destructive">Alertas de Cobrança</CardTitle>
+                    </div>
+                    <Badge variant="destructive" className="ml-auto">
+                        {alerts.length} pendências
+                    </Badge>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4 mt-4">
+                        {alerts.slice(0, 3).map((alert) => (
+                            <motion.div
+                                key={alert.id}
+                                variants={itemVariants}
+                                className="flex items-center justify-between bg-background p-4 rounded-lg border shadow-sm"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2 bg-destructive/10 rounded-full">
+                                        <AlertTriangle className="h-4 w-4 text-destructive" />
+                                    </div>
+                                    <div>
+                                        <p className="font-medium">{alert.clientName || "Cliente"}</p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Venceu em {format(new Date(alert.dueDate), 'dd/MM/yyyy')} • {alert.daysLate} dias de atraso
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-medium">{alert.clientName || "Cliente"}</p>
-                                    <p className="text-sm text-muted-foreground">
-                                        Venceu em {format(new Date(alert.dueDate), 'dd/MM/yyyy')} • {alert.daysLate} dias de atraso
-                                    </p>
+                                <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                        <p className="font-bold text-destructive">{formatCurrency(alert.totalAmount)}</p>
+                                        <p className="text-xs text-muted-foreground">Valor atualizado</p>
+                                    </div>
+                                    <Button size="sm" variant="outline" asChild>
+                                        <Link to={`/loans/${alert.id}`}>Ver Detalhes</Link>
+                                    </Button>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="text-right">
-                                    <p className="font-bold text-destructive">{formatCurrency(alert.totalAmount)}</p>
-                                    <p className="text-xs text-muted-foreground">Valor atualizado</p>
-                                </div>
-                                <Button size="sm" variant="outline" asChild>
-                                    <Link to={`/loans/${alert.id}`}>Ver Detalhes</Link>
-                                </Button>
-                            </div>
-                        </div>
-                    ))}
-                    {alerts.length > 3 && (
-                        <Button variant="link" className="w-full text-muted-foreground" asChild>
-                            <Link to="/loans">Ver todos os alertas</Link>
-                        </Button>
-                    )}
-                </div>
-            </CardContent>
-        </Card>
+                            </motion.div>
+                        ))}
+                        {alerts.length > 3 && (
+                            <Button variant="link" className="w-full text-muted-foreground" asChild>
+                                <Link to="/loans">Ver todos os alertas</Link>
+                            </Button>
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
+        </motion.div>
     )
 }

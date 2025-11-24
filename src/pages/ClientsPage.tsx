@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Search, MoreHorizontal, User, Phone, MapPin } from "lucide-react"
+import { Search, MoreHorizontal, User, Phone, MapPin, Plus } from "lucide-react"
 import { Client } from "@/mocks/handlers"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -21,14 +21,19 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
+    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { motion } from "framer-motion"
 import { ClientDialog } from "@/components/clients/ClientDialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 
 export function ClientsPage() {
     const [clients, setClients] = useState<Client[]>([])
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState("")
+    const [selectedClient, setSelectedClient] = useState<Client | undefined>(undefined)
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const fetchClients = () => {
         setLoading(true)
@@ -44,6 +49,24 @@ export function ClientsPage() {
         fetchClients()
     }, [])
 
+    const handleEdit = (client: Client) => {
+        setSelectedClient(client)
+        setDialogOpen(true)
+    }
+
+    const handleDelete = (client: Client) => {
+        setSelectedClient(client)
+        setDeleteDialogOpen(true)
+    }
+
+    const confirmDelete = async () => {
+        if (selectedClient) {
+            await fetch(`/api/clients/${selectedClient.id}`, { method: 'DELETE' })
+            setDeleteDialogOpen(false)
+            fetchClients()
+        }
+    }
+
     const filteredClients = clients.filter(client =>
         client.name.toLowerCase().includes(search.toLowerCase()) ||
         client.phone.includes(search)
@@ -54,7 +77,7 @@ export function ClientsPage() {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1
+                staggerChildren: 0.05
             }
         }
     }
@@ -73,7 +96,19 @@ export function ClientsPage() {
                     { label: "Dashboard", href: "/" },
                     { label: "Clientes" }
                 ]}
-                actions={<ClientDialog onClientAdded={fetchClients} />}
+                actions={
+                    <ClientDialog onSave={fetchClients} client={selectedClient}>
+                        <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
+                            onClick={() => {
+                                setSelectedClient(undefined)
+                                setDialogOpen(true)
+                            }}
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Novo Cliente
+                        </Button>
+                    </ClientDialog>
+                }
             />
 
             <motion.div
@@ -81,10 +116,10 @@ export function ClientsPage() {
                 initial="hidden"
                 animate="visible"
             >
-                <Card className="border-white/10 bg-card/40 backdrop-blur-xl shadow-2xl shadow-black/5 overflow-hidden ring-1 ring-white/5">
-                    <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/5">
+                <Card className="border-black/5 dark:border-white/10 bg-card/50 backdrop-blur-xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
+                    <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-black/5 dark:border-white/5">
                         <CardTitle className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-                            Lista de Clientes
+                            Todos os Clientes
                         </CardTitle>
                         <div className="relative w-full max-w-sm group">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -94,16 +129,15 @@ export function ClientsPage() {
                                 placeholder="Buscar por nome ou telefone..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-10 bg-background/50 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all duration-300 hover:bg-background/80"
+                                className="pl-10 bg-background/50 dark:bg-black/30 border-gray-300/50 dark:border-gray-700/50 focus:border-primary/50 transition-all text-base"
                             />
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        {/* Desktop Table */}
                         <div className="hidden md:block">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="hover:bg-transparent border-b border-white/5 bg-muted/30">
+                                    <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
                                         <TableHead className="w-[80px] pl-6">Foto</TableHead>
                                         <TableHead>Nome</TableHead>
                                         <TableHead>Telefone</TableHead>
@@ -114,7 +148,7 @@ export function ClientsPage() {
                                 <TableBody>
                                     {loading ? (
                                         Array.from({ length: 5 }).map((_, i) => (
-                                            <TableRow key={i} className="border-b border-white/5">
+                                            <TableRow key={i} className="border-b border-black/5 dark:border-white/5">
                                                 <TableCell className="pl-6"><Skeleton className="h-10 w-10 rounded-full" /></TableCell>
                                                 <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                                                 <TableCell><Skeleton className="h-4 w-24" /></TableCell>
@@ -126,7 +160,7 @@ export function ClientsPage() {
                                         <TableRow>
                                             <TableCell colSpan={5} className="h-64 text-center">
                                                 <div className="flex flex-col items-center justify-center text-muted-foreground">
-                                                    <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center mb-4 ring-1 ring-white/10">
+                                                    <div className="h-16 w-16 rounded-full bg-muted/30 dark:bg-black/20 flex items-center justify-center mb-4 ring-1 ring-black/5 dark:ring-white/10">
                                                         <Search className="h-8 w-8 opacity-50" />
                                                     </div>
                                                     <p className="font-medium text-lg text-foreground">Nenhum cliente encontrado</p>
@@ -139,10 +173,10 @@ export function ClientsPage() {
                                             <motion.tr
                                                 key={client.id}
                                                 variants={itemVariants}
-                                                className="group cursor-pointer border-b border-white/5 last:border-0 hover:bg-muted/40 transition-colors duration-200"
+                                                className="group cursor-pointer border-b border-black/5 dark:border-white/5 last:border-0 hover:bg-muted/30 dark:hover:bg-black/20 transition-colors duration-200"
                                             >
-                                                <TableCell className="pl-6 py-4">
-                                                    <div className="h-10 w-10 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-primary/50 transition-all duration-300 shadow-lg shadow-black/10">
+                                                <TableCell className="pl-6 py-3">
+                                                    <div className="h-10 w-10 rounded-full overflow-hidden ring-2 ring-black/5 dark:ring-white/10 group-hover:ring-primary/50 transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-black/10">
                                                         {client.photo ? (
                                                             <img src={client.photo} alt={client.name} className="h-full w-full object-cover" />
                                                         ) : (
@@ -153,7 +187,7 @@ export function ClientsPage() {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="font-medium text-foreground group-hover:text-primary transition-colors duration-300">
-                                                    {client.name}
+                                                    <Link to={`/clients/${client.id}`}>{client.name}</Link>
                                                 </TableCell>
                                                 <TableCell className="text-muted-foreground">{client.phone}</TableCell>
                                                 <TableCell className="text-muted-foreground max-w-[200px] truncate" title={client.address}>
@@ -167,13 +201,14 @@ export function ClientsPage() {
                                                                 <MoreHorizontal className="h-4 w-4" />
                                                             </Button>
                                                         </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-white/10 shadow-xl">
+                                                        <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10 shadow-xl">
                                                             <DropdownMenuLabel>Ações</DropdownMenuLabel>
                                                             <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 focus:text-primary">
                                                                 <Link to={`/clients/${client.id}`}>Ver Detalhes</Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem className="cursor-pointer focus:bg-primary/10 focus:text-primary">Editar Cliente</DropdownMenuItem>
-                                                            <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">Excluir</DropdownMenuItem>
+                                                            <DropdownMenuItem onClick={() => handleEdit(client)} className="cursor-pointer focus:bg-primary/10 focus:text-primary">Editar Cliente</DropdownMenuItem>
+                                                            <DropdownMenuSeparator className="bg-border/50" />
+                                                            <DropdownMenuItem onClick={() => handleDelete(client)} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">Excluir Cliente</DropdownMenuItem>
                                                         </DropdownMenuContent>
                                                     </DropdownMenu>
                                                 </TableCell>
@@ -188,7 +223,7 @@ export function ClientsPage() {
                         <div className="md:hidden space-y-4 p-4">
                             {loading ? (
                                 Array.from({ length: 3 }).map((_, i) => (
-                                    <div key={i} className="flex items-center space-x-4 p-4 rounded-xl border border-white/5 bg-muted/10">
+                                    <div key={i} className="flex items-center space-x-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10">
                                         <Skeleton className="h-12 w-12 rounded-full" />
                                         <div className="space-y-2">
                                             <Skeleton className="h-4 w-[200px]" />
@@ -206,9 +241,9 @@ export function ClientsPage() {
                                     <motion.div
                                         key={client.id}
                                         variants={itemVariants}
-                                        className="flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
+                                        className="flex items-center gap-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
                                     >
-                                        <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-white/10 shrink-0">
+                                        <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-black/5 dark:ring-white/10 shrink-0">
                                             {client.photo ? (
                                                 <img src={client.photo} alt={client.name} className="h-full w-full object-cover" />
                                             ) : (
@@ -234,12 +269,13 @@ export function ClientsPage() {
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-white/10">
+                                            <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10">
                                                 <DropdownMenuItem asChild>
                                                     <Link to={`/clients/${client.id}`}>Ver Detalhes</Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>Editar</DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive">Excluir</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleEdit(client)}>Editar</DropdownMenuItem>
+                                                <DropdownMenuSeparator className="bg-border/50" />
+                                                <DropdownMenuItem onClick={() => handleDelete(client)} className="text-destructive">Excluir</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </motion.div>
@@ -249,6 +285,23 @@ export function ClientsPage() {
                     </CardContent>
                 </Card>
             </motion.div>
+
+            <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Essa ação não pode ser desfeita. Isso irá deletar permanentemente o cliente e todos os seus dados.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                            Deletar
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

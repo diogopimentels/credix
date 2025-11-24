@@ -3,13 +3,19 @@ import { create } from 'zustand';
 interface AuthState {
     isAuthenticated: boolean;
     user: { name: string; role: string; email: string } | null;
-    login: () => void;
+    login: (email: string, pass: string) => void;
     logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
     isAuthenticated: false,
     user: null,
-    login: () => set({ isAuthenticated: true, user: { name: 'Credor Exemplo', role: 'admin', email: 'admin@credimestre.com' } }),
+    login: (email, password) => {
+        if (email === 'admin@credix.com' && password === 'admin') {
+            set({ isAuthenticated: true, user: { name: 'Admin', role: 'admin', email: 'admin@credix.com' } });
+            return true;
+        }
+        return false;
+    },
     logout: () => set({ isAuthenticated: false, user: null }),
 }));

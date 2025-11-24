@@ -3,32 +3,46 @@ import { DashboardCards } from "@/components/dashboard/DashboardCards"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
 import { RecentLoans } from "@/components/dashboard/RecentLoans"
 import { AlertsSection } from "@/components/dashboard/AlertsSection"
+import { Card } from "@/components/ui/card"
 import { PageHeader } from "@/components/ui/PageHeader"
 
 export function DashboardPage() {
     const [data, setData] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         fetch('/api/dashboard')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json()
+            })
             .then(data => {
                 setData(data)
                 setLoading(false)
+            })
+            .catch(err => {
+                setError(err.message);
+                setLoading(false);
             })
     }, [])
 
     if (loading) {
         return (
-            <div className="space-y-8 animate-pulse">
-                <div className="h-12 w-48 bg-muted rounded-lg" />
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {[1, 2, 3, 4].map(i => (
-                        <div key={i} className="h-32 bg-muted rounded-xl" />
-                    ))}
-                </div>
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-lg text-muted-foreground">Carregando Dashboard...</p>
             </div>
-        )
+        );
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+    
+    if (!data) {
+        return <div>No data</div>;
     }
 
     return (

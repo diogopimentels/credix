@@ -1,0 +1,16 @@
+{
+  "$schema": "https://github.com/shadcn/ui/blob/main/apps/www/public/schema.json",
+  "name": "credix",
+  "rsc": false,
+  "style": "default",
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/index.css",
+    "baseColor": "slate",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
+  }
+}

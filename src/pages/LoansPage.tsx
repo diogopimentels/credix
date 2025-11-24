@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { DollarSign, Filter } from "lucide-react"
+import { DollarSign, Filter, MoreHorizontal, Plus } from "lucide-react"
 import { Loan } from "@/mocks/handlers"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -26,6 +26,8 @@ import { LoanDialog } from "@/components/loans/LoanDialog"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 import { format } from "date-fns"
 import { LoanStatus } from "@/utils/calculations"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 
 // Enhanced Loan type from API response
 interface EnhancedLoan extends Loan {
@@ -79,6 +81,9 @@ export function LoansPage() {
     const [loans, setLoans] = useState<EnhancedLoan[]>([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState("ALL")
+    const [selectedLoan, setSelectedLoan] = useState<Loan | undefined>(undefined)
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const fetchLoans = () => {
         setLoading(true)
@@ -94,6 +99,24 @@ export function LoansPage() {
         fetchLoans()
     }, [])
 
+    const handleEdit = (loan: Loan) => {
+        setSelectedLoan(loan)
+        setDialogOpen(true)
+    }
+
+    const handleDelete = (loan: Loan) => {
+        setSelectedLoan(loan)
+        setDeleteDialogOpen(true)
+    }
+
+    const confirmDelete = async () => {
+        if (selectedLoan) {
+            await fetch(`/api/loans/${selectedLoan.id}`, { method: 'DELETE' })
+            setDeleteDialogOpen(false)
+            fetchLoans()
+        }
+    }
+
     const filteredLoans = filter === "ALL"
         ? loans
         : loans.filter(loan => loan.status === filter)
@@ -103,7 +126,7 @@ export function LoansPage() {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1
+                staggerChildren: 0.05
             }
         }
     }
@@ -122,7 +145,19 @@ export function LoansPage() {
                     { label: "Dashboard", href: "/" },
                     { label: "Empréstimos" }
                 ]}
-                actions={<LoanDialog onLoanAdded={fetchLoans} />}
+                actions={
+                    <LoanDialog onSave={fetchLoans} loan={selectedLoan}>
+                        <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
+                            onClick={() => {
+                                setSelectedLoan(undefined)
+                                setDialogOpen(true)
+                            }}
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Novo Empréstimo
+                        </Button>
+                    </LoanDialog>
+                }
             />
 
             <motion.div
@@ -130,22 +165,22 @@ export function LoansPage() {
                 initial="hidden"
                 animate="visible"
             >
-                <Card className="border-white/10 bg-card/40 backdrop-blur-xl shadow-2xl shadow-black/5 overflow-hidden ring-1 ring-white/5">
-                    <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/5">
+                <Card className="border-black/5 dark:border-white/10 bg-card/50 backdrop-blur-xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
+                    <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-black/5 dark:border-white/5">
                         <CardTitle className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
                             Gerenciar Empréstimos
                         </CardTitle>
                         <div className="flex items-center gap-3 w-full sm:w-auto">
-                            <div className="flex items-center gap-2 px-3 py-2 bg-background/50 rounded-lg border border-white/10 text-muted-foreground">
+                            <div className="flex items-center gap-2 px-3 py-2 bg-background/50 rounded-lg border border-border/50 text-muted-foreground">
                                 <Filter className="h-4 w-4" />
                                 <span className="text-sm font-medium">Filtros:</span>
                             </div>
                             <div className="w-full sm:w-[200px]">
                                 <Select value={filter} onValueChange={setFilter}>
-                                    <SelectTrigger className="bg-background/50 border-white/10 focus:ring-primary/20 transition-all duration-300 hover:bg-background/80">
+                                    <SelectTrigger className="bg-background/50 border-border/50 focus:ring-primary/20 transition-all duration-300 hover:bg-background/80">
                                         <SelectValue placeholder="Filtrar por status" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-card/95 backdrop-blur-xl border-white/10">
+                                    <SelectContent className="bg-card/95 backdrop-blur-xl border-border/50">
                                         <SelectItem value="ALL">Todos</SelectItem>
                                         <SelectItem value="ONGOING">Em Andamento</SelectItem>
                                         <SelectItem value="NEAR_DUE">A Vencer</SelectItem>
@@ -160,7 +195,7 @@ export function LoansPage() {
                     <CardContent className="p-0">
                         <Table>
                             <TableHeader>
-                                <TableRow className="hover:bg-transparent border-b border-white/5 bg-muted/30">
+                                <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
                                     <TableHead className="pl-6">Cliente</TableHead>
                                     <TableHead>Valor Inicial</TableHead>
                                     <TableHead>Total Atual</TableHead>
@@ -172,7 +207,7 @@ export function LoansPage() {
                             <TableBody>
                                 {loading ? (
                                     Array.from({ length: 5 }).map((_, i) => (
-                                        <TableRow key={i} className="border-b border-white/5">
+                                        <TableRow key={i} className="border-b border-black/5 dark:border-white/5">
                                             <TableCell className="pl-6"><Skeleton className="h-4 w-32" /></TableCell>
                                             <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                                             <TableCell><Skeleton className="h-4 w-24" /></TableCell>
@@ -185,7 +220,7 @@ export function LoansPage() {
                                     <TableRow>
                                         <TableCell colSpan={6} className="h-64 text-center">
                                             <div className="flex flex-col items-center justify-center text-muted-foreground">
-                                                <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center mb-4 ring-1 ring-white/10">
+                                                <div className="h-16 w-16 rounded-full bg-muted/30 dark:bg-black/20 flex items-center justify-center mb-4 ring-1 ring-black/5 dark:ring-white/10">
                                                     <DollarSign className="h-8 w-8 opacity-50" />
                                                 </div>
                                                 <p className="font-medium text-lg text-foreground">Nenhum empréstimo encontrado</p>
@@ -198,10 +233,10 @@ export function LoansPage() {
                                         <motion.tr
                                             key={loan.id}
                                             variants={itemVariants}
-                                            className="group hover:bg-muted/40 border-b border-white/5 last:border-0 cursor-pointer transition-colors duration-200"
+                                            className="group hover:bg-muted/30 dark:hover:bg-black/20 border-b border-black/5 dark:border-white/5 last:border-0 cursor-pointer transition-colors duration-200"
                                         >
                                             <TableCell className="font-medium group-hover:text-primary transition-colors duration-300 pl-6 py-4">
-                                                {loan.clientName}
+                                                <Link to={`/clients/${loan.clientId}`}>{loan.clientName}</Link>
                                             </TableCell>
                                             <TableCell className="text-muted-foreground">{formatCurrency(loan.amount)}</TableCell>
                                             <TableCell className="font-bold text-foreground">{formatCurrency(loan.totalAmount)}</TableCell>
@@ -212,9 +247,22 @@ export function LoansPage() {
                                                 </StatusBadge>
                                             </TableCell>
                                             <TableCell className="text-right pr-6">
-                                                <Button variant="outline" size="sm" asChild className="hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-all duration-300">
-                                                    <Link to={`/loans/${loan.id}`}>Detalhes</Link>
-                                                </Button>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors duration-200">
+                                                            <span className="sr-only">Abrir menu</span>
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10 shadow-xl">
+                                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 focus:text-primary">
+                                                            <Link to={`/loans/${loan.id}`}>Ver Detalhes</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleEdit(loan)} className="cursor-pointer focus:bg-primary/10 focus:text-primary">Editar Empréstimo</DropdownMenuItem>
+                                                        <DropdownMenuSeparator className="bg-border/50" />
+                                                        <DropdownMenuItem onClick={() => handleDelete(loan)} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">Excluir Empréstimo</DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
                                             </TableCell>
                                         </motion.tr>
                                     ))
@@ -224,6 +272,23 @@ export function LoansPage() {
                     </CardContent>
                 </Card>
             </motion.div>
+
+            <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Essa ação não pode ser desfeita. Isso irá deletar permanentemente o empréstimo e todos os seus dados.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                            Deletar
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

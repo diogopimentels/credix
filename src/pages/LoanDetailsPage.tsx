@@ -2,15 +2,13 @@ import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { AlertTriangle, CheckCircle2, Calendar, DollarSign, User } from "lucide-react"
 import { Loan, Client } from "@/mocks/handlers"
 import { formatCurrency, LoanStatus } from "@/utils/calculations"
 import { format } from "date-fns"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { StatusBadge } from "@/components/ui/StatusBadge"
+import { PaymentDialog } from "@/components/loans/PaymentDialog"
 
 interface EnhancedLoanDetails extends Loan {
     client: Client
@@ -27,8 +25,6 @@ export function LoanDetailsPage() {
     const { id } = useParams()
     const [loan, setLoan] = useState<EnhancedLoanDetails | null>(null)
     const [loading, setLoading] = useState(true)
-    const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0])
-    const [isPaymentOpen, setIsPaymentOpen] = useState(false)
 
     const fetchLoan = async () => {
         setLoading(true)
@@ -47,21 +43,6 @@ export function LoanDetailsPage() {
     useEffect(() => {
         fetchLoan()
     }, [id])
-
-    const handlePayment = async () => {
-        if (!loan) return
-        try {
-            await fetch(`/api/loans/${loan.id}/pay`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ paidDate: new Date(paymentDate).toISOString() })
-            })
-            setIsPaymentOpen(false)
-            fetchLoan() // Refresh data
-        } catch (error) {
-            console.error("Payment failed", error)
-        }
-    }
 
     if (loading) {
         return (
@@ -195,42 +176,11 @@ export function LoanDetailsPage() {
                     </CardContent>
                     <CardFooter className="pt-6">
                         {loan.status !== 'PAID' && (
-                            <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
-                                <DialogTrigger asChild>
-                                    <Button className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" size="lg">
-                                        <CheckCircle2 className="mr-2 h-5 w-5" /> Registrar Pagamento
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-md">
-                                    <DialogHeader>
-                                        <DialogTitle>Registrar Pagamento</DialogTitle>
-                                        <DialogDescription>
-                                            Confirme o recebimento do valor total para quitar este empréstimo.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="space-y-6 py-4">
-                                        <div className="space-y-2">
-                                            <Label>Valor a Receber</Label>
-                                            <div className="text-3xl font-bold text-center p-6 bg-muted/50 rounded-xl border border-border/50 text-primary">
-                                                {formatCurrency(loan.totalAmount)}
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label>Data do Pagamento</Label>
-                                            <Input
-                                                type="date"
-                                                value={paymentDate}
-                                                onChange={(e) => setPaymentDate(e.target.value)}
-                                                className="text-center"
-                                            />
-                                        </div>
-                                    </div>
-                                    <DialogFooter>
-                                        <Button variant="outline" onClick={() => setIsPaymentOpen(false)}>Cancelar</Button>
-                                        <Button onClick={handlePayment} className="shadow-lg shadow-primary/20">Confirmar Pagamento</Button>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
+                            <PaymentDialog loan={loan} onSave={fetchLoan}>
+                                <Button className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" size="lg">
+                                    <CheckCircle2 className="mr-2 h-5 w-5" /> Registrar Pagamento
+                                </Button>
+                            </PaymentDialog>
                         )}
                     </CardFooter>
                 </Card>

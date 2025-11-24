@@ -85,7 +85,7 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                                                 <span className="text-xs text-muted-foreground font-normal">Ref: {loan.id.slice(0, 8)}</span>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="font-medium">{formatCurrency(loan.amount)}</TableCell>
+                                        <TableCell className="font-medium">{formatCurrency(loan.details.totalAmount)}</TableCell>
                                         <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
                                         <TableCell className="text-right pr-0">
                                             <StatusBadge status={getStatusType(loan.status)}>
