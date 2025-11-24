@@ -1,0 +1,11 @@
+{
+  "clients": [
+    { "id": "c-1", "name": "Cliente Exemplo 1", "phone": "(11) 99999-0001", "address": "Rua Exemplo, 101", "photo": "", "notes": "Cliente confiável", "createdAt": "2025-01-01T00:00:00.000Z" },
+    { "id": "c-2", "name": "Cliente Exemplo 2", "phone": "(11) 99999-0002", "address": "Rua Exemplo, 102", "photo": "", "notes": "", "createdAt": "2025-01-02T00:00:00.000Z" },
+    { "id": "c-3", "name": "Cliente Exemplo 3", "phone": "(11) 99999-0003", "address": "Rua Exemplo, 103", "photo": "", "notes": "", "createdAt": "2025-01-03T00:00:00.000Z" }
+  ],
+  "loans": [
+    { "id": "l-1", "clientId": "c-1", "amount": 1000, "startDate": "2025-10-30T00:00:00.000Z", "termDays": 20, "paidDate": null, "createdAt": "2025-10-30T00:00:00.000Z" },
+    { "id": "l-2", "clientId": "c-2", "amount": 500, "startDate": "2025-11-14T00:00:00.000Z", "termDays": 20, "paidDate": null, "createdAt": "2025-11-14T00:00:00.000Z" }
+  ]
+}

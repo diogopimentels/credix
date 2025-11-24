@@ -19,20 +19,20 @@ export function RevenueChart({ data }: RevenueChartProps) {
                     <BarChart data={data}>
                         <defs>
                             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.3} />
+                                <stop offset="5%" stopColor={"hsl(var(--primary))"} stopOpacity={0.95} />
+                                <stop offset="95%" stopColor={"hsl(var(--primary))"} stopOpacity={0.6} />
                             </linearGradient>
                         </defs>
                         <XAxis
                             dataKey="name"
-                            stroke="#888888"
+                            stroke={"hsl(var(--muted-foreground))"}
                             fontSize={12}
                             tickLine={false}
                             axisLine={false}
                             dy={10}
                         />
                         <YAxis
-                            stroke="#888888"
+                            stroke={"hsl(var(--muted-foreground))"}
                             fontSize={12}
                             tickLine={false}
                             axisLine={false}
@@ -40,10 +40,11 @@ export function RevenueChart({ data }: RevenueChartProps) {
                             dx={-10}
                         />
                         <Tooltip
-                            cursor={{ fill: 'var(--muted)', opacity: 0.2 }}
+                            cursor={{ fill: 'hsl(var(--muted))', opacity: 0.18 }}
                             contentStyle={{
-                                backgroundColor: 'var(--card)',
-                                border: '1px solid var(--border)',
+                                backgroundColor: 'hsl(var(--card))',
+                                color: 'hsl(var(--card-foreground))',
+                                border: '1px solid hsl(var(--border))',
                                 borderRadius: 'var(--radius)',
                                 fontSize: '12px',
                                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
