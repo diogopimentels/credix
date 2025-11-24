@@ -106,8 +106,6 @@ export default function (req, res) {
         }))
     } catch (err) {
         console.error('dashboard api error', err)
-        // Return error stack in dev environments, otherwise a minimal message
-        const message = (process.env.NODE_ENV === 'production') ? 'Internal Server Error' : String(err && err.stack ? err.stack : err)
-        res.status(500).send(message)
+        return res.status(500).json({ error: String(err?.message || err), stack: process.env.NODE_ENV === 'production' ? undefined : err?.stack })
     }
 }

@@ -1,8 +1,11 @@
 import { addDays, isAfter, startOfDay, differenceInCalendarDays } from 'date-fns'
 import fs from 'fs/promises'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
-export const DB_PATH = path.resolve(process.cwd(), 'data', 'db.json')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+export const DB_PATH = path.resolve(__dirname, '..', 'data', 'db.json')
 
 export const LOAN_TERMS = {
   DEFAULT_DAYS: 20,

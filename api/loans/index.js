@@ -35,6 +35,6 @@ export default async function (req, res) {
     return res.status(405).end()
   } catch (err) {
     console.error('loans index error', err)
-    return res.status(500).send(String(err && err.stack ? err.stack : err))
+    return res.status(500).json({ error: String(err?.message || err), stack: process.env.NODE_ENV === 'production' ? undefined : err?.stack })
   }
 }

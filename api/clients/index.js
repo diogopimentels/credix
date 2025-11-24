@@ -32,6 +32,7 @@ export default async function (req, res) {
     return res.status(405).end()
   } catch (err) {
     console.error('clients index error', err)
-    return res.status(500).send(String(err && err.stack ? err.stack : err))
+    console.error('DB_PATH:', require.main?.paths || 'N/A')
+    return res.status(500).json({ error: String(err?.message || err), stack: process.env.NODE_ENV === 'production' ? undefined : err?.stack })
   }
 }
