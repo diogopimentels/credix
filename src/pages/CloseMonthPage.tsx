@@ -15,6 +15,7 @@ import { FileText } from "lucide-react"
 import { format, getMonth, getYear } from "date-fns"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { EnhancedLoan } from "@/mocks/handlers"
+import { fetchJson } from "@/lib/api"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 
 const getStatusType = (status: LoanStatus): "success" | "warning" | "error" | "neutral" => {
@@ -40,15 +41,18 @@ export function CloseMonthPage() {
     const [generatingPdf, setGeneratingPdf] = useState(false)
 
     useEffect(() => {
-        fetch('/api/loans')
-            .then(res => res.json())
+        fetchJson('/api/loans')
             .then(data => {
                 const filtered = data.filter((loan: EnhancedLoan) =>
                     getMonth(new Date(loan.startDate)) === parseInt(month) &&
                     getYear(new Date(loan.startDate)) === parseInt(year)
                 );
                 setLoans(filtered);
-            });
+            })
+            .catch(err => {
+                console.error('Failed to load loans:', err.message)
+                setLoans([])
+            })
     }, [month, year])
 
     const totalLent = loans.reduce((acc, loan) => acc + loan.amount, 0);

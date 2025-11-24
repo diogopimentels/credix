@@ -7,6 +7,7 @@ import { Loan, Client } from "@/mocks/handlers"
 import { formatCurrency, LoanStatus } from "@/utils/calculations"
 import { format } from "date-fns"
 import { PageHeader } from "@/components/ui/PageHeader"
+import { fetchJson } from "@/lib/api"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 import { PaymentDialog } from "@/components/loans/PaymentDialog"
 
@@ -29,11 +30,9 @@ export function LoanDetailsPage() {
     const fetchLoan = async () => {
         setLoading(true)
         try {
-            const res = await fetch(`/api/loans/${id}`)
-            if (!res.ok) throw new Error('Loan not found')
-            const data = await res.json()
+            const data = await fetchJson(`/api/loans/${id}`)
             setLoan(data)
-        } catch (error) {
+        } catch (error: any) {
             console.error(error)
         } finally {
             setLoading(false)

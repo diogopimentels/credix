@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/ui/PageHeader"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 import { Phone, MapPin, FileText } from "lucide-react"
 import { Client, Loan } from "@/mocks/handlers"
+import { fetchJson } from "@/lib/api"
 import { formatCurrency } from "@/utils/calculations"
 import { format } from "date-fns"
 
@@ -21,14 +22,9 @@ export function ClientDetailsPage() {
     useEffect(() => {
         const fetchClient = async () => {
             try {
-                const res = await fetch(`/api/clients/${id}`)
-                if (!res.ok) throw new Error('Client not found')
-                const clientData = await res.json()
-
-                const resLoans = await fetch('/api/loans')
-                const loansData = await resLoans.json()
+                const clientData = await fetchJson(`/api/clients/${id}`)
+                const loansData = await fetchJson('/api/loans')
                 const clientLoans = loansData.filter((l: any) => l.clientId === id)
-
                 setClient({ ...clientData, loans: clientLoans })
             } catch (error) {
                 console.error(error)

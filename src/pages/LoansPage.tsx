@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select"
 import { DollarSign, Filter, MoreHorizontal, Plus } from "lucide-react"
 import { Loan } from "@/mocks/handlers"
+import { fetchJson } from "@/lib/api"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
@@ -86,10 +87,14 @@ export function LoansPage() {
 
     const fetchLoans = () => {
         setLoading(true)
-        fetch('/api/loans')
-            .then(res => res.json())
+        fetchJson('/api/loans')
             .then(data => {
                 setLoans(data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error('Failed to load loans:', err.message)
+                setLoans([])
                 setLoading(false)
             })
     }
@@ -109,7 +114,9 @@ export function LoansPage() {
 
     const confirmDelete = async () => {
         if (selectedLoan) {
-            await fetch(`/api/loans/${selectedLoan.id}`, { method: 'DELETE' })
+            await fetch(`/api/loans/${selectedLoan.id}`, { method: 'DELETE' }).then(res => {
+                if (!res.ok) throw new Error(`Delete failed ${res.status}`)
+            })
             setDeleteDialogOpen(false)
             fetchLoans()
         }

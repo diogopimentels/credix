@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
+import { fetchJson } from "@/lib/api"
 import { Client, Loan } from "@/mocks/handlers"
 import { format } from "date-fns"
 import { SimulationBox } from "./SimulationBox"
@@ -30,9 +31,12 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
 
     useEffect(() => {
         if (open) {
-            fetch('/api/clients')
-                .then(res => res.json())
+            fetchJson('/api/clients')
                 .then(data => setClients(data))
+                .catch(err => {
+                    console.error('Failed to load clients:', err.message)
+                    setClients([])
+                })
         }
     }, [open])
 
@@ -74,6 +78,9 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
                     amount: principalAmount,
                     termDays: parseInt(formData.termDays)
                 })
+            }).then(res => {
+                if (!res.ok) throw new Error(`Failed request ${res.status}`)
+                return res
             })
             setOpen(false)
             onSave()

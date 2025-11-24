@@ -5,6 +5,7 @@ import { RecentLoans } from "@/components/dashboard/RecentLoans"
 import { AlertsSection } from "@/components/dashboard/AlertsSection"
  
 import { PageHeader } from "@/components/ui/PageHeader"
+import { fetchJson } from "@/lib/api"
 
 export function DashboardPage() {
     const [data, setData] = useState<any>(null)
@@ -12,20 +13,14 @@ export function DashboardPage() {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        fetch('/api/dashboard')
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                return res.json()
-            })
-            .then(data => {
-                setData(data)
+        fetchJson('/api/dashboard')
+            .then(d => {
+                setData(d)
                 setLoading(false)
             })
             .catch(err => {
-                setError(err.message);
-                setLoading(false);
+                setError(err.message)
+                setLoading(false)
             })
     }, [])
 

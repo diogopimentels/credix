@@ -7,6 +7,7 @@ import { Link } from "react-router-dom"
 import { formatCurrency } from "@/utils/calculations"
 import { format } from "date-fns"
 import { motion } from "framer-motion"
+import { fetchJson } from "@/lib/api"
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -27,9 +28,12 @@ export function AlertsSection() {
     const [alerts, setAlerts] = useState<any[]>([])
 
     useEffect(() => {
-        fetch('/api/alerts')
-            .then(res => res.json())
+        fetchJson('/api/alerts')
             .then(data => setAlerts(data))
+            .catch(err => {
+                console.error('Failed to load alerts:', err.message)
+                setAlerts([])
+            })
     }, [])
 
     if (alerts.length === 0) return null

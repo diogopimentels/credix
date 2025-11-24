@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table"
 import { Search, MoreHorizontal, User, Phone, MapPin, Plus } from "lucide-react"
 import { Client } from "@/mocks/handlers"
+import { fetchJson } from "@/lib/api"
 import { PageHeader } from "@/components/ui/PageHeader"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -36,10 +37,14 @@ export function ClientsPage() {
 
     const fetchClients = () => {
         setLoading(true)
-        fetch('/api/clients')
-            .then(res => res.json())
+        fetchJson('/api/clients')
             .then(data => {
                 setClients(data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error('Failed to load clients:', err.message)
+                setClients([])
                 setLoading(false)
             })
     }
@@ -59,7 +64,8 @@ export function ClientsPage() {
 
     const confirmDelete = async () => {
         if (selectedClient) {
-            await fetch(`/api/clients/${selectedClient.id}`, { method: 'DELETE' })
+            const res = await fetch(`/api/clients/${selectedClient.id}`, { method: 'DELETE' })
+            if (!res.ok) console.error('Delete client failed', res.status)
             setDeleteDialogOpen(false)
             fetchClients()
         }

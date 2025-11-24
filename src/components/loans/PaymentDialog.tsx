@@ -32,11 +32,12 @@ export function PaymentDialog({ loan, onSave, children }: { loan: EnhancedLoan, 
     const handleSave = async () => {
         setLoading(true)
         try {
-            await fetch(`/api/loans/${loan.id}/pay`, {
+            const res = await fetch(`/api/loans/${loan.id}/pay`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ paidDate })
             })
+            if (!res.ok) throw new Error(`Payment request failed ${res.status}`)
             setOpen(false)
             onSave()
         } catch (error) {
