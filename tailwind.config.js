@@ -14,6 +14,17 @@ export default {
       },
     },
     extend: {
+      // Add a simple fluid typographic scale and spacing helpers using clamp
+      spacing: {
+        'fluid-sm': 'clamp(0.5rem, 1.5vw, 0.75rem)',
+        'fluid-md': 'clamp(0.75rem, 2.2vw, 1rem)',
+        'fluid-lg': 'clamp(1rem, 3vw, 1.5rem)'
+      },
+      fontSize: {
+        'fluid-sm': 'clamp(0.875rem, 1.6vw, 1rem)',
+        'fluid-md': 'clamp(1rem, 2.2vw, 1.125rem)',
+        'fluid-lg': 'clamp(1.125rem, 2.8vw, 1.5rem)'
+      },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         heading: ["Inter", "sans-serif"],

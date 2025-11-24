@@ -146,8 +146,8 @@ export function ClientsPage() {
                         <div className="hidden md:block">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
-                                        <TableHead className="w-[80px] pl-6">Foto</TableHead>
+                                        <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
+                                        <TableHead className="w-[clamp(4.5rem,8vw,6rem)] pl-6">Foto</TableHead>
                                         <TableHead>Nome</TableHead>
                                         <TableHead>Telefone</TableHead>
                                         <TableHead>Endereço</TableHead>
@@ -199,7 +199,7 @@ export function ClientsPage() {
                                                     <Link to={`/clients/${client.id}`}>{client.name}</Link>
                                                 </TableCell>
                                                 <TableCell className="text-muted-foreground">{client.phone}</TableCell>
-                                                <TableCell className="text-muted-foreground max-w-[200px] truncate" title={client.address}>
+                                                <TableCell className="text-muted-foreground max-w-[clamp(8rem,25vw,14rem)] truncate" title={client.address}>
                                                     {client.address}
                                                 </TableCell>
                                                 <TableCell className="text-right pr-6">
@@ -235,8 +235,8 @@ export function ClientsPage() {
                                     <div key={i} className="flex items-center space-x-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10">
                                         <Skeleton className="h-12 w-12 rounded-full" />
                                         <div className="space-y-2">
-                                            <Skeleton className="h-4 w-[200px]" />
-                                            <Skeleton className="h-4 w-[150px]" />
+                                            <Skeleton className="h-4 w-[clamp(8rem,40vw,12rem)]" />
+                                            <Skeleton className="h-4 w-[clamp(6rem,30vw,9rem)]" />
                                         </div>
                                     </div>
                                 ))

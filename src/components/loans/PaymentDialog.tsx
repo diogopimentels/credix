@@ -52,7 +52,7 @@ export function PaymentDialog({ loan, onSave, children }: { loan: EnhancedLoan, 
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-card/95 backdrop-blur-xl border-white/10">
+            <DialogContent className="sm:max-w-[clamp(20rem,40vw,26.5rem)] bg-card/95 backdrop-blur-xl border-white/10">
                 <DialogHeader>
                     <DialogTitle>Registrar Pagamento</DialogTitle>
                     <DialogDescription>

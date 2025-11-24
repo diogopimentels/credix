@@ -27,7 +27,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                     </Button>
 
                     {/* Desktop Search Bar */}
-                    <div className="hidden md:flex items-center gap-2 rounded-md border border-border/60 bg-background/70 px-3 h-10 w-[300px] focus-within:border-primary/80 focus-within:ring-1 focus-within:ring-ring transition-all duration-300">
+                    <div className="hidden md:flex items-center gap-2 rounded-md border border-border/60 bg-background/70 px-3 h-10 w-[clamp(12rem,30vw,20rem)] min-w-[10rem] focus-within:border-primary/80 focus-within:ring-1 focus-within:ring-ring transition-all duration-300">
                         <Search className="h-4 w-4 text-muted-foreground" />
                         <input
                             placeholder="Buscar..."

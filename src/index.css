@@ -79,8 +79,34 @@
     @apply border-border;
   }
 
+  /* Ensure consistent box sizing and prevent horizontal overflow */
+  html, body {
+    box-sizing: border-box;
+    overscroll-behavior-x: none;
+    overflow-x: hidden;
+  }
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Prevent mobile browsers from zooming form controls: ensure >=16px font-size in inputs */
+  input, textarea, select, button {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  /* Make images and media responsive and avoid overflow */
+  img, picture, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
   }
 
   ::selection {
