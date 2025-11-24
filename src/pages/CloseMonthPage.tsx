@@ -87,8 +87,8 @@ export function CloseMonthPage() {
                 }
             />
 
-            <div className="flex gap-4 p-4 bg-card/50 backdrop-blur-sm border rounded-lg">
-                <div className="w-[180px]">
+            <div className="flex flex-col sm:flex-row gap-4 p-4 bg-card/50 backdrop-blur-sm border rounded-lg">
+                <div className="w-full sm:w-[clamp(10rem,30vw,15rem)]">
                     <Select value={month} onValueChange={setMonth}>
                         <SelectTrigger>
                             <SelectValue placeholder="Mês" />
@@ -102,7 +102,7 @@ export function CloseMonthPage() {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="w-[120px]">
+                <div className="w-full sm:w-[clamp(8rem,25vw,12rem)]">
                     <Select value={year} onValueChange={setYear}>
                         <SelectTrigger>
                             <SelectValue placeholder="Ano" />
@@ -115,7 +115,7 @@ export function CloseMonthPage() {
                 </div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 <Card className="border-l-4 border-l-blue-500 shadow-sm">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total Emprestado</CardTitle>

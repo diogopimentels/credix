@@ -179,12 +179,12 @@ export function LoansPage() {
                         <CardTitle className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
                             Gerenciar Empréstimos
                         </CardTitle>
-                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
                             <div className="flex items-center gap-2 px-3 py-2 bg-background/50 rounded-lg border border-border/50 text-muted-foreground">
                                 <Filter className="h-4 w-4" />
                                 <span className="text-sm font-medium">Filtros:</span>
                             </div>
-                            <div className="w-full sm:w-[200px]">
+                            <div className="w-full sm:w-[clamp(10rem,30vw,15rem)]">
                                 <Select value={filter} onValueChange={setFilter}>
                                     <SelectTrigger className="bg-background/50 border-border/50 focus:ring-primary/20 transition-all duration-300 hover:bg-background/80">
                                         <SelectValue placeholder="Filtrar por status" />
@@ -202,82 +202,135 @@ export function LoansPage() {
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
-                                    <TableHead className="pl-6">Cliente</TableHead>
-                                    <TableHead>Valor Inicial</TableHead>
-                                    <TableHead>Total Atual</TableHead>
-                                    <TableHead>Vencimento</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right pr-6">Ações</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {loading ? (
-                                    Array.from({ length: 5 }).map((_, i) => (
-                                        <TableRow key={i} className="border-b border-black/5 dark:border-white/5">
-                                            <TableCell className="pl-6"><Skeleton className="h-4 w-32" /></TableCell>
-                                            <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                                            <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                                            <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                                            <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
-                                            <TableCell className="pr-6"><Skeleton className="h-8 w-16 ml-auto" /></TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : filteredLoans.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="h-64 text-center">
-                                            <div className="flex flex-col items-center justify-center text-muted-foreground">
-                                                <div className="h-16 w-16 rounded-full bg-muted/30 dark:bg-black/20 flex items-center justify-center mb-4 ring-1 ring-black/5 dark:ring-white/10">
-                                                    <DollarSign className="h-8 w-8 opacity-50" />
-                                                </div>
-                                                <p className="font-medium text-lg text-foreground">Nenhum empréstimo encontrado</p>
-                                                <p className="text-sm opacity-70 mt-1">Tente alterar os filtros ou adicione um novo empréstimo.</p>
-                                            </div>
-                                        </TableCell>
+                        <div className="hidden md:block">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="hover:bg-transparent border-b border-black/5 dark:border-white/5 bg-muted/20 dark:bg-black/10">
+                                        <TableHead className="pl-6">Cliente</TableHead>
+                                        <TableHead>Valor Inicial</TableHead>
+                                        <TableHead>Total Atual</TableHead>
+                                        <TableHead>Vencimento</TableHead>
+                                        <TableHead>Status</TableHead>
+                                        <TableHead className="text-right pr-6">Ações</TableHead>
                                     </TableRow>
-                                ) : (
-                                    filteredLoans.map((loan) => (
-                                        <motion.tr
-                                            key={loan.id}
-                                            variants={itemVariants}
-                                            className="group hover:bg-muted/30 dark:hover:bg-black/20 border-b border-black/5 dark:border-white/5 last:border-0 cursor-pointer transition-colors duration-200"
-                                        >
-                                            <TableCell className="font-medium group-hover:text-primary transition-colors duration-300 pl-6 py-4">
-                                                <Link to={`/clients/${loan.clientId}`}>{loan.clientName}</Link>
+                                </TableHeader>
+                                <TableBody>
+                                    {loading ? (
+                                        Array.from({ length: 5 }).map((_, i) => (
+                                            <TableRow key={i} className="border-b border-black/5 dark:border-white/5">
+                                                <TableCell className="pl-6"><Skeleton className="h-4 w-32" /></TableCell>
+                                                <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                                <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                                <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                                <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                                                <TableCell className="pr-6"><Skeleton className="h-8 w-16 ml-auto" /></TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : filteredLoans.length === 0 ? (
+                                        <TableRow>
+                                            <TableCell colSpan={6} className="h-64 text-center">
+                                                <div className="flex flex-col items-center justify-center text-muted-foreground">
+                                                    <div className="h-16 w-16 rounded-full bg-muted/30 dark:bg-black/20 flex items-center justify-center mb-4 ring-1 ring-black/5 dark:ring-white/10">
+                                                        <DollarSign className="h-8 w-8 opacity-50" />
+                                                    </div>
+                                                    <p className="font-medium text-lg text-foreground">Nenhum empréstimo encontrado</p>
+                                                    <p className="text-sm opacity-70 mt-1">Tente alterar os filtros ou adicione um novo empréstimo.</p>
+                                                </div>
                                             </TableCell>
-                                            <TableCell className="text-muted-foreground">{formatCurrency(loan.amount)}</TableCell>
-                                            <TableCell className="font-bold text-foreground">{formatCurrency(loan.totalAmount)}</TableCell>
-                                            <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
-                                            <TableCell>
-                                                <StatusBadge status={getStatusType(loan.status)}>
-                                                    {getStatusLabel(loan.status)}
-                                                </StatusBadge>
-                                            </TableCell>
-                                            <TableCell className="text-right pr-6">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors duration-200">
-                                                            <span className="sr-only">Abrir menu</span>
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10 shadow-xl">
-                                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 focus:text-primary">
-                                                            <Link to={`/loans/${loan.id}`}>Ver Detalhes</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={() => handleEdit(loan)} className="cursor-pointer focus:bg-primary/10 focus:text-primary">Editar Empréstimo</DropdownMenuItem>
-                                                        <DropdownMenuSeparator className="bg-border/50" />
-                                                        <DropdownMenuItem onClick={() => handleDelete(loan)} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">Excluir Empréstimo</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </motion.tr>
-                                    ))
-                                )}
-                            </TableBody>
-                        </Table>
+                                        </TableRow>
+                                    ) : (
+                                        filteredLoans.map((loan) => (
+                                            <motion.tr
+                                                key={loan.id}
+                                                variants={itemVariants}
+                                                className="group hover:bg-muted/30 dark:hover:bg-black/20 border-b border-black/5 dark:border-white/5 last:border-0 cursor-pointer transition-colors duration-200"
+                                            >
+                                                <TableCell className="font-medium group-hover:text-primary transition-colors duration-300 pl-6 py-4">
+                                                    <Link to={`/clients/${loan.clientId}`}>{loan.clientName}</Link>
+                                                </TableCell>
+                                                <TableCell className="text-muted-foreground">{formatCurrency(loan.amount)}</TableCell>
+                                                <TableCell className="font-bold text-foreground">{formatCurrency(loan.totalAmount)}</TableCell>
+                                                <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
+                                                <TableCell>
+                                                    <StatusBadge status={getStatusType(loan.status)}>
+                                                        {getStatusLabel(loan.status)}
+                                                    </StatusBadge>
+                                                </TableCell>
+                                                <TableCell className="text-right pr-6">
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors duration-200">
+                                                                <span className="sr-only">Abrir menu</span>
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10 shadow-xl">
+                                                            <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/10 focus:text-primary">
+                                                                <Link to={`/loans/${loan.id}`}>Ver Detalhes</Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem onClick={() => handleEdit(loan)} className="cursor-pointer focus:bg-primary/10 focus:text-primary">Editar Empréstimo</DropdownMenuItem>
+                                                            <DropdownMenuSeparator className="bg-border/50" />
+                                                            <DropdownMenuItem onClick={() => handleDelete(loan)} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">Excluir Empréstimo</DropdownMenuItem>
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </TableCell>
+                                            </motion.tr>
+                                        ))
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+
+                        {/* Mobile Card List */}
+                        <div className="md:hidden space-y-4 p-4">
+                            {loading ? (
+                                Array.from({ length: 3 }).map((_, i) => (
+                                    <div key={i} className="flex items-center space-x-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10">
+                                        <Skeleton className="h-12 w-12 rounded" />
+                                        <div className="space-y-2 flex-1">
+                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-3/4" />
+                                        </div>
+                                    </div>
+                                ))
+                            ) : filteredLoans.length === 0 ? (
+                                <div className="text-center py-12 text-muted-foreground">
+                                    <DollarSign className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                    <p>Nenhum empréstimo encontrado</p>
+                                </div>
+                            ) : (
+                                filteredLoans.map((loan) => (
+                                    <motion.div
+                                        key={loan.id}
+                                        variants={itemVariants}
+                                        className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
+                                    >
+                                        <div className="flex items-center justify-between mb-3">
+                                            <Link to={`/loans/${loan.id}`} className="font-medium text-foreground hover:text-primary transition-colors">
+                                                {loan.clientName}
+                                            </Link>
+                                            <StatusBadge status={getStatusType(loan.status)}>
+                                                {getStatusLabel(loan.status)}
+                                            </StatusBadge>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                                            <div>
+                                                <span className="text-muted-foreground">Valor Inicial</span>
+                                                <p className="font-medium">{formatCurrency(loan.amount)}</p>
+                                            </div>
+                                            <div>
+                                                <span className="text-muted-foreground">Total Atual</span>
+                                                <p className="font-medium">{formatCurrency(loan.totalAmount)}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between text-sm">
+                                            <span className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</span>
+                                            <Link to={`/loans/${loan.id}`} className="text-primary hover:underline font-medium">Ver</Link>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            )}
+                        </div>
                     </CardContent>
                 </Card>
             </motion.div>

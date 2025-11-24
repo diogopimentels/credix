@@ -47,7 +47,7 @@ export function LoanDetailsPage() {
         return (
             <div className="space-y-8 animate-pulse">
                 <div className="h-24 w-full bg-muted rounded-xl" />
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
                     <div className="h-96 bg-muted rounded-xl" />
                     <div className="h-96 bg-muted rounded-xl" />
                 </div>
@@ -80,7 +80,7 @@ export function LoanDetailsPage() {
                 ]}
             />
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
                 <Card className="h-full border-muted/60 bg-card/50 backdrop-blur-sm shadow-soft">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">

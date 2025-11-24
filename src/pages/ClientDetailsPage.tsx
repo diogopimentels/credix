@@ -89,8 +89,8 @@ export function ClientDetailsPage() {
                 ]}
             />
 
-            <div className="grid gap-6 md:grid-cols-3">
-                <Card className="md:col-span-1 border-muted/60 bg-card/50 backdrop-blur-sm shadow-soft h-fit">
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+                <Card className="lg:col-span-1 border-muted/60 bg-card/50 backdrop-blur-sm shadow-soft h-fit">
                     <CardHeader>
                         <CardTitle>Dados do Cliente</CardTitle>
                     </CardHeader>
