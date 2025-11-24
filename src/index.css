@@ -80,10 +80,12 @@
   }
 
   /* Ensure consistent box sizing and prevent horizontal overflow */
-  html, body {
+  html, body, #root {
     box-sizing: border-box;
     overscroll-behavior-x: none;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
   *, *::before, *::after {

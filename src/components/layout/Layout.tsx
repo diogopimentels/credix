@@ -8,7 +8,7 @@ export function Layout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     return (
-        <div className="min-h-screen bg-background flex relative overflow-hidden">
+        <div className="min-h-screen bg-background flex relative overflow-x-hidden">
             {/* Ambient Background */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]" />
