@@ -64,8 +64,14 @@ export function ClientsPage() {
 
     const confirmDelete = async () => {
         if (selectedClient) {
-            const res = await fetch(`/api/clients/${selectedClient.id}`, { method: 'DELETE' })
-            if (!res.ok) console.error('Delete client failed', res.status)
+            try {
+                const res = await fetch(`/api/clients/${selectedClient.id}`, { method: 'DELETE' })
+                if (!res.ok) {
+                    throw new Error(`Delete failed with status ${res.status}`)
+                }
+            } catch (err) {
+                console.error('Delete client failed:', err)
+            }
             setDeleteDialogOpen(false)
             fetchClients()
         }

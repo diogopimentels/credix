@@ -114,9 +114,14 @@ export function LoansPage() {
 
     const confirmDelete = async () => {
         if (selectedLoan) {
-            await fetch(`/api/loans/${selectedLoan.id}`, { method: 'DELETE' }).then(res => {
-                if (!res.ok) throw new Error(`Delete failed ${res.status}`)
-            })
+            try {
+                const res = await fetch(`/api/loans/${selectedLoan.id}`, { method: 'DELETE' })
+                if (!res.ok) {
+                    throw new Error(`Delete failed ${res.status}`)
+                }
+            } catch (err) {
+                console.error('Delete loan failed:', err)
+            }
             setDeleteDialogOpen(false)
             fetchLoans()
         }

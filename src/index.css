@@ -16,6 +16,9 @@
     --primary: 232 70% 60%; /* #4C5FD7 */
     --primary-foreground: 0 0% 100%; /* #FFFFFF */
 
+    /* Chart accent color (H S% L%) - overridden in .dark for better contrast */
+    --chart-primary: 232 65% 45%; /* stronger, more saturated for light theme */
+
     --secondary: 228 11% 20%; /* #292F3F */
     --secondary-foreground: 220 7% 91%; /* #E4E6EB */
 
@@ -49,6 +52,9 @@
 
     --primary: 232 70% 60%;
     --primary-foreground: 0 0% 100%;
+
+    /* Chart accent color (H S% L%) - overridden in .dark for better contrast */
+    --chart-primary: 232 80% 60%;
 
     --secondary: 228 11% 20%;
     --secondary-foreground: 220 7% 91%;
