@@ -28,10 +28,10 @@ export function Layout() {
             </Sheet>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col md:pl-[clamp(14rem,18vw,20rem)] min-h-screen transition-all duration-300 relative z-10 max-w-full">
+            <div className="flex-1 flex flex-col md:pl-[clamp(14rem,18vw,20rem)] min-h-screen transition-all duration-300 relative z-10 w-full max-w-full overflow-x-hidden">
                 <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
-                <main className="flex-1 overflow-x-hidden p-4 md:p-8 max-w-full">
-                    <div className="max-w-full overflow-x-hidden">
+                <main className="flex-1 p-4 md:p-8 w-full max-w-full overflow-x-hidden">
+                    <div className="w-full max-w-full overflow-x-hidden">
                         <Outlet />
                     </div>
                 </main>

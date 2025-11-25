@@ -63,14 +63,14 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                     </Link>
                 </Button>
             </CardHeader>
-            <CardContent>
-                <div className="space-y-8">
+            <CardContent className="p-0 md:p-6 w-full max-w-full overflow-hidden">
+                <div className="space-y-8 w-full max-w-full">
                     {/* Desktop Table */}
-                    <div className="hidden md:block max-w-full overflow-x-hidden">
+                    <div className="hidden md:block w-full max-w-full overflow-x-auto">
                         <Table>
                             <TableHeader>
                                 <TableRow className="hover:bg-transparent border-none">
-                                    <TableHead className="pl-0 max-w-[200px] truncate">Cliente</TableHead>
+                                    <TableHead className="pl-0 max-w-[120px] md:max-w-[200px] truncate">Cliente</TableHead>
                                     <TableHead>Valor</TableHead>
                                     <TableHead>Vencimento</TableHead>
                                     <TableHead className="text-right pr-0">Status</TableHead>
@@ -79,7 +79,7 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                             <TableBody>
                                 {loans.map((loan) => (
                                     <TableRow key={loan.id} className="group cursor-pointer hover:bg-muted/50 border-none max-w-full">
-                                        <TableCell className="font-medium group-hover:text-primary transition-colors pl-0 py-3 max-w-[200px]">
+                                        <TableCell className="font-medium group-hover:text-primary transition-colors pl-0 py-3 max-w-[120px] md:max-w-[200px] truncate">
                                             <div className="flex flex-col min-w-0">
                                                 <span className="truncate">{loan.clientName}</span>
                                                 <span className="text-xs text-muted-foreground font-normal truncate">Ref: {loan.id.slice(0, 8)}</span>
@@ -99,9 +99,9 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                     </div>
 
                     {/* Mobile List */}
-                    <div className="md:hidden space-y-4 max-w-full overflow-x-hidden">
+                    <div className="md:hidden space-y-4 w-full max-w-full overflow-hidden px-4">
                         {loans.map((loan) => (
-                            <div key={loan.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0 max-w-full overflow-x-hidden">
+                            <div key={loan.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0 w-full max-w-full overflow-hidden">
                                 <div className="space-y-1 min-w-0">
                                     <p className="text-sm font-medium leading-none truncate">{loan.clientName}</p>
                                     <p className="text-xs text-muted-foreground truncate">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</p>

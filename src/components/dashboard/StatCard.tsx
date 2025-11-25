@@ -23,9 +23,9 @@ export function StatCard({ title, value, description, icon: Icon, trend, classNa
             animate={{ opacity: 1 }}
             whileHover={{ transition: { duration: 0.2 } }}
             transition={{ duration: 0.4, delay }}
-            className="max-w-full overflow-x-hidden"
+            className="w-full max-w-full overflow-hidden"
         >
-            <Card className={cn("overflow-hidden relative border-white/10 bg-card/50 backdrop-blur-sm hover:shadow-glow transition-all duration-500 group", className)}>
+            <Card className={cn("overflow-hidden relative border-white/10 bg-card/50 backdrop-blur-sm hover:shadow-glow transition-all duration-500 group w-full max-w-full", className)}>
                 <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform duration-500" />
 
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">

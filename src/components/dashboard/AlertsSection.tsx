@@ -68,8 +68,8 @@ export function AlertsSection() {
                                         <AlertTriangle className="h-4 w-4 text-destructive" />
                                     </div>
                                     <div>
-                                        <p className="font-medium">{alert.clientName || "Cliente"}</p>
-                                        <p className="text-sm text-muted-foreground">
+                                        <p className="font-medium truncate max-w-[150px] sm:max-w-[200px]">{alert.clientName || "Cliente"}</p>
+                                        <p className="text-sm text-muted-foreground truncate max-w-[200px] sm:max-w-xs">
                                             Venceu em {format(new Date(alert.dueDate), 'dd/MM/yyyy')} • {alert.daysLate} dias de atraso
                                         </p>
                                     </div>

@@ -4,47 +4,66 @@
 
 @layer base {
   :root {
-    --background: 240 5% 96%; /* #F5F6F8 */
-    --foreground: 240 6% 10%; /* #1A1B1E */
+    --background: 240 5% 96%;
+    /* #F5F6F8 */
+    --foreground: 240 6% 10%;
+    /* #1A1B1E */
 
-    --card: 240 5% 100%; /* #FFFFFF */
+    --card: 240 5% 100%;
+    /* #FFFFFF */
     --card-foreground: 240 6% 10%;
 
     --popover: 240 5% 100%;
     --popover-foreground: 240 6% 10%;
 
-    --primary: 232 70% 60%; /* #4C5FD7 */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary: 232 70% 60%;
+    /* #4C5FD7 */
+    --primary-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
     /* Chart accent color (H S% L%) - overridden in .dark for better contrast */
-    --chart-primary: 232 65% 45%; /* stronger, more saturated for light theme */
+    --chart-primary: 232 65% 45%;
+    /* stronger, more saturated for light theme */
 
-    --secondary: 228 11% 20%; /* #292F3F */
-    --secondary-foreground: 220 7% 91%; /* #E4E6EB */
+    --secondary: 228 11% 20%;
+    /* #292F3F */
+    --secondary-foreground: 220 7% 91%;
+    /* #E4E6EB */
 
-    --muted: 225 21% 75%; /* #A0A8C0 */
-    --muted-foreground: 240 4% 46%; /* #717378 */
+    --muted: 225 21% 75%;
+    /* #A0A8C0 */
+    --muted-foreground: 240 4% 46%;
+    /* #717378 */
 
-    --accent: 231 23% 15%; /* #1E1E2E */
-    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    --accent: 231 23% 15%;
+    /* #1E1E2E */
+    --accent-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --destructive: 355 83% 61%; /* #EF4444 */
+    --destructive: 355 83% 61%;
+    /* #EF4444 */
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 45%; /* #22C55E */
+    --success: 142 71% 45%;
+    /* #22C55E */
 
-    --border: 240 4% 89%; /* #E2E4E5 */
-    --input: 240 4% 93%; /* #ECEEF0 */
+    --border: 240 4% 89%;
+    /* #E2E4E5 */
+    --input: 240 4% 93%;
+    /* #ECEEF0 */
     --ring: 232 70% 60%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 228 11% 7%; /* #0F1117 */
-    --foreground: 220 7% 91%; /* #E4E6EB */
+    --background: 228 11% 7%;
+    /* #0F1117 */
+    --foreground: 220 7% 91%;
+    /* #E4E6EB */
 
-    --card: 228 11% 9%; /* #13151A */
+    --card: 228 11% 9%;
+    /* #13151A */
     --card-foreground: 220 7% 91%;
 
     --popover: 228 11% 7%;
@@ -75,29 +94,15 @@
     --ring: 232 70% 60%;
   }
 
-  * {
-    @apply border-border;
-  }
-
-  /* Ensure consistent box sizing and prevent horizontal overflow */
-  html, body, #root {
-    box-sizing: border-box;
-    overscroll-behavior-x: none;
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  *, *::before, *::after {
-    box-sizing: inherit;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
 
   /* Prevent mobile browsers from zooming form controls: ensure >=16px font-size in inputs */
-  input, textarea, select, button {
+  input,
+  textarea,
+  select,
+  button {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -109,7 +114,11 @@
   }
 
   /* Make images and media responsive and avoid overflow */
-  img, picture, video, canvas, svg {
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
     max-width: 100%;
     height: auto;
     display: block;

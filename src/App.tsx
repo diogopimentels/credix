@@ -19,21 +19,23 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 function App() {
     return (
         <ThemeProvider defaultTheme="system" storageKey="credimestre-theme">
-            <Router>
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
+            <div className="w-full max-w-full overflow-x-hidden">
+                <Router>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
 
-                    <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
-                        <Route index element={<Navigate to="/dashboard" replace />} />
-                        <Route path="dashboard" element={<DashboardPage />} />
-                        <Route path="clients" element={<ClientsPage />} />
-                        <Route path="clients/:id" element={<ClientDetailsPage />} />
-                        <Route path="loans" element={<LoansPage />} />
-                        <Route path="loans/:id" element={<LoanDetailsPage />} />
-                        <Route path="close-month" element={<CloseMonthPage />} />
-                    </Route>
-                </Routes>
-            </Router>
+                        <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+                            <Route index element={<Navigate to="/dashboard" replace />} />
+                            <Route path="dashboard" element={<DashboardPage />} />
+                            <Route path="clients" element={<ClientsPage />} />
+                            <Route path="clients/:id" element={<ClientDetailsPage />} />
+                            <Route path="loans" element={<LoansPage />} />
+                            <Route path="loans/:id" element={<LoanDetailsPage />} />
+                            <Route path="close-month" element={<CloseMonthPage />} />
+                        </Route>
+                    </Routes>
+                </Router>
+            </div>
         </ThemeProvider>
     )
 }
