@@ -26,7 +26,7 @@ export function StatCard({ title, value, description, icon: Icon, trend, classNa
             className="max-w-full overflow-x-hidden"
         >
             <Card className={cn("overflow-hidden relative border-white/10 bg-card/50 backdrop-blur-sm hover:shadow-glow transition-all duration-500 group", className)}>
-                <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform duration-500" />
 
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
                     <CardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">

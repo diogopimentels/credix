@@ -142,8 +142,8 @@ export function LoansPage() {
     }
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
     }
 
     return (
@@ -317,11 +317,11 @@ export function LoansPage() {
                                         <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                                             <div>
                                                 <span className="text-muted-foreground">Valor Inicial</span>
-                                                <p className="font-medium">{formatCurrency(loan.amount)}</p>
+                                                <p className="font-medium truncate">{formatCurrency(loan.amount)}</p>
                                             </div>
                                             <div>
                                                 <span className="text-muted-foreground">Total Atual</span>
-                                                <p className="font-medium">{formatCurrency(loan.totalAmount)}</p>
+                                                <p className="font-medium truncate">{formatCurrency(loan.totalAmount)}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-between text-sm">

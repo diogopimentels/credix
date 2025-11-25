@@ -27,7 +27,7 @@ const dotStyles: Record<StatusType, string> = {
 export function StatusBadge({ status, children, className }: StatusBadgeProps) {
     return (
         <span className={cn(
-            "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-md transition-all duration-300 hover:scale-105",
+            "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-md transition-all duration-300",
             statusStyles[status],
             className
         )}>

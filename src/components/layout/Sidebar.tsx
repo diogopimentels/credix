@@ -84,7 +84,7 @@ export function Sidebar() {
                     </div>
                 </div>
                 <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors group">
-                    <LogOut className="w-4 h-4 transition-transform group-hover:scale-90" />
+                    <LogOut className="w-4 h-4" />
                     Sair
                 </Button>
             </div>

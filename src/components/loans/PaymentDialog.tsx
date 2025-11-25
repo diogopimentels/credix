@@ -76,8 +76,8 @@ export function PaymentDialog({ loan, onSave, children }: { loan: EnhancedLoan, 
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="date" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+                        <Label htmlFor="date" className="text-right sm:text-right">
                             Data do Pagamento
                         </Label>
                         <Input
@@ -85,7 +85,7 @@ export function PaymentDialog({ loan, onSave, children }: { loan: EnhancedLoan, 
                             type="date"
                             value={paidDate}
                             onChange={e => setPaidDate(e.target.value)}
-                            className="col-span-3 bg-background/50"
+                            className="col-span-1 sm:col-span-3 bg-background/50"
                         />
                     </div>
                 </div>
