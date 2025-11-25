@@ -31,6 +31,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                             tickLine={false}
                             axisLine={false}
                             dy={10}
+                            minTickGap={10}
                         />
                         <YAxis
                             stroke={"hsl(var(--muted-foreground))"}
@@ -48,7 +49,10 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                 border: '1px solid hsl(var(--border))',
                                 borderRadius: 'var(--radius)',
                                 fontSize: '12px',
-                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
+                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                                maxWidth: '200px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
                             }}
                         />
                         <Bar

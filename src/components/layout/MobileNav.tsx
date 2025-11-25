@@ -36,7 +36,7 @@ export function MobileNav() {
                             )}
                             <div className={cn(
                                 "relative flex flex-col items-center gap-1 transition-all duration-300",
-                                isActive ? "text-primary scale-110" : "text-muted-foreground group-hover:text-foreground"
+                                isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                             )}>
                                 <item.icon className={cn("w-6 h-6", isActive && "fill-current")} />
                                 <span className={cn("text-xs", isActive ? "text-primary font-bold" : "text-muted-foreground")}>{item.label}</span>

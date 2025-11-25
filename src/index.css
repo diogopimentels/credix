@@ -103,6 +103,11 @@
     -ms-text-size-adjust: 100%;
   }
 
+  /* Prevent automatic zoom on mobile devices */
+  html {
+    touch-action: manipulation;
+  }
+
   /* Make images and media responsive and avoid overflow */
   img, picture, video, canvas, svg {
     max-width: 100%;

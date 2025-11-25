@@ -161,7 +161,7 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
                         onClick={handleSave}
                         disabled={loading || !isFormValid}
                         size="lg"
-                        className="w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                        className="w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300"
                     >
                         {loading ? "Salvando..." : (loan ? "Salvar Alterações" : "Criar Empréstimo")}
                         {!loading && <ArrowRight className="ml-2 h-4 w-4" />}

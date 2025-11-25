@@ -19,9 +19,9 @@ interface StatCardProps {
 export function StatCard({ title, value, description, icon: Icon, trend, className, delay = 0 }: StatCardProps) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            whileHover={{ transition: { duration: 0.2 } }}
             transition={{ duration: 0.4, delay }}
             className="max-w-full overflow-x-hidden"
         >
