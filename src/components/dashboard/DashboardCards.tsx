@@ -15,7 +15,7 @@ interface DashboardCardsProps {
 
 export function DashboardCards({ data }: DashboardCardsProps) {
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 w-full max-w-full overflow-hidden">
             <StatCard
                 title="Total Emprestado"
                 value={formatCurrency(data.totalLent)}

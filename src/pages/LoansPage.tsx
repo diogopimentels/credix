@@ -185,7 +185,7 @@ export function LoansPage() {
                                 <Filter className="h-4 w-4" />
                                 <span className="text-sm font-medium">Filtros:</span>
                             </div>
-                            <div className="w-full sm:w-[clamp(10rem,30vw,15rem)]">
+                            <div className="w-full sm:w-[clamp(10rem,30vw,15rem)] max-w-full overflow-hidden">
                                 <Select value={filter} onValueChange={setFilter}>
                                     <SelectTrigger className="bg-background/50 border-border/50 focus:ring-primary/20 transition-all duration-300 hover:bg-background/80">
                                         <SelectValue placeholder="Filtrar por status" />

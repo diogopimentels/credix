@@ -98,19 +98,10 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
-  /* Prevent mobile browsers from zooming form controls: ensure >=16px font-size in inputs */
-  input,
-  textarea,
-  select,
-  button {
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-  }
-
-  /* Prevent automatic zoom on mobile devices */
-  html {
-    touch-action: manipulation;
+  *,
+  *::before,
+  *::after {
+    min-width: 0;
   }
 
   /* Make images and media responsive and avoid overflow */

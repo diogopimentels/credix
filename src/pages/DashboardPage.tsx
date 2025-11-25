@@ -3,7 +3,7 @@ import { DashboardCards } from "@/components/dashboard/DashboardCards"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
 import { RecentLoans } from "@/components/dashboard/RecentLoans"
 import { AlertsSection } from "@/components/dashboard/AlertsSection"
- 
+
 import { PageHeader } from "@/components/ui/PageHeader"
 import { fetchJson } from "@/lib/api"
 
@@ -35,7 +35,7 @@ export function DashboardPage() {
     if (error) {
         return <div>Error: {error}</div>;
     }
-    
+
     if (!data) {
         return <div>No data</div>;
     }
@@ -52,15 +52,19 @@ export function DashboardPage() {
                 }
             />
 
-            <DashboardCards data={data} />
+            <div className="w-full max-w-full overflow-hidden">
+                <DashboardCards data={data} />
+            </div>
 
-            <AlertsSection />
+            <div className="w-full max-w-full overflow-hidden">
+                <AlertsSection />
+            </div>
 
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-7 max-w-full overflow-x-hidden">
-                <div className="lg:col-span-4">
+            <div className="grid gap-6 grid-cols-1 lg:grid-cols-7 w-full max-w-full overflow-hidden">
+                <div className="lg:col-span-4 w-full max-w-full overflow-hidden">
                     <RevenueChart data={data.revenueChartData} />
                 </div>
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-3 w-full max-w-full overflow-hidden">
                     <RecentLoans loans={data.recentLoans} />
                 </div>
             </div>

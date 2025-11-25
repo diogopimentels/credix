@@ -23,7 +23,7 @@ export function PageHeader({
     className
 }: PageHeaderProps) {
     return (
-        <div className={cn("flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8 animate-slide-up", className)}>
+        <div className={cn("flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8 animate-slide-up w-full max-w-full overflow-hidden", className)}>
             <div className="space-y-1.5">
                 {breadcrumbs && (
                     <nav className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
