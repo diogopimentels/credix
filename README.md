@@ -1,4 +1,4 @@
-# 💰 Credimestre - Sistema de Gestão de Empréstimos
+# 💰 Credix - Sistema de Gestão de Empréstimos
 
 > Sistema completo e moderno para gerenciamento de empréstimos pessoais, clientes e pagamentos.
 
