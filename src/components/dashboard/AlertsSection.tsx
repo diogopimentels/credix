@@ -8,6 +8,7 @@ import { formatCurrency } from "@/utils/calculations"
 import { format } from "date-fns"
 import { motion } from "framer-motion"
 import { fetchJson } from "@/lib/api"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -26,6 +27,7 @@ const itemVariants = {
 
 export function AlertsSection() {
     const [alerts, setAlerts] = useState<any[]>([])
+    const isMobile = useIsMobile()
 
     useEffect(() => {
         fetchJson('/api/alerts')
@@ -40,9 +42,9 @@ export function AlertsSection() {
 
     return (
         <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
+            initial={isMobile ? {} : "hidden"}
+            animate={isMobile ? {} : "visible"}
+            variants={isMobile ? {} : containerVariants}
             className="max-w-full overflow-x-hidden"
         >
             <Card className="w-full border-destructive/20 bg-destructive/5 shadow-sm">
@@ -60,7 +62,7 @@ export function AlertsSection() {
                         {alerts.slice(0, 3).map((alert) => (
                             <motion.div
                                 key={alert.id}
-                                variants={itemVariants}
+                                variants={isMobile ? {} : itemVariants}
                                 className="flex items-center justify-between bg-background p-4 rounded-lg border shadow-sm"
                             >
                                 <div className="flex items-center gap-4">

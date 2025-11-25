@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { CheckCircle2, ArrowRight, Lock, Mail } from "lucide-react"
 import { useAuthStore } from "@/store/authStore"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export function LoginPage() {
     const navigate = useNavigate()
@@ -14,6 +15,7 @@ export function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("admin@credix.com")
     const [password, setPassword] = useState("admin")
+    const isMobile = useIsMobile()
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
@@ -39,23 +41,23 @@ export function LoginPage() {
             </div>
 
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                initial={isMobile ? {} : { opacity: 0 }}
+                animate={isMobile ? {} : { opacity: 1 }}
+                transition={isMobile ? {} : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full max-w-md px-4 relative z-10"
             >
                 <div className="mb-8 text-center">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
+                        initial={isMobile ? {} : { opacity: 0 }}
+                        animate={isMobile ? {} : { opacity: 1 }}
+                        transition={isMobile ? {} : { delay: 0.2, duration: 0.5 }}
                         className="inline-flex items-center justify-center gap-2 mb-4"
                     >
                         <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-lg shadow-primary/25">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-                                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </div>
                         <span className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
@@ -63,16 +65,16 @@ export function LoginPage() {
                         </span>
                     </motion.div>
                     <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
+                        initial={isMobile ? {} : { opacity: 0 }}
+                        animate={isMobile ? {} : { opacity: 1 }}
+                        transition={isMobile ? {} : { delay: 0.3, duration: 0.5 }}
                         className="text-muted-foreground text-balance"
                     >
                         Bem-vindo de volta. Acesse sua conta para gerenciar suas finanças.
                     </motion.p>
                 </div>
 
-                <Card className="border-black/5 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-2xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden">
+                <Card className="border-black/5 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-2xl shadow-2xl shadow-black/5 dark:shadow-black/20 overflow-hidden w-full max-w-full">
                     <CardHeader className="space-y-1 pb-2">
                         <div className="flex justify-center mb-2">
                             <div className="h-1.5 w-14 rounded-full bg-primary/20" />
@@ -88,7 +90,7 @@ export function LoginPage() {
                                         id="email"
                                         type="email"
                                         placeholder="admin@credix.com"
-                                        className="pl-11 h-12 bg-white/50 dark:bg-black/30 border-gray-300/50 dark:border-gray-700/50 focus:border-primary/50 transition-all text-base"
+                                        className="pl-11 h-12 bg-white/50 dark:bg-black/30 border-gray-300/50 dark:border-gray-700/50 focus:border-primary/50 transition-all text-base w-full"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
@@ -106,7 +108,7 @@ export function LoginPage() {
                                         id="password"
                                         type="password"
                                         placeholder="••••••••"
-                                        className="pl-11 h-12 bg-white/50 dark:bg-black/30 border-gray-300/50 dark:border-gray-700/50 focus:border-primary/50 transition-all text-base"
+                                        className="pl-11 h-12 bg-white/50 dark:bg-black/30 border-gray-300/50 dark:border-gray-700/50 focus:border-primary/50 transition-all text-base w-full"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
@@ -114,9 +116,9 @@ export function LoginPage() {
                                 </div>
                             </div>
                             <motion.div
-                                whileHover={{ y: -2 }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                whileHover={isMobile ? {} : { y: -2 }}
+                                whileTap={isMobile ? {} : { scale: 0.98 }}
+                                transition={isMobile ? {} : { type: "spring", stiffness: 400, damping: 15 }}
                             >
                                 <Button
                                     type="submit"
@@ -154,9 +156,9 @@ export function LoginPage() {
                 </Card>
 
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
+                    initial={isMobile ? {} : { opacity: 0 }}
+                    animate={isMobile ? {} : { opacity: 1 }}
+                    transition={isMobile ? {} : { delay: 0.5, duration: 0.8 }}
                     className="mt-8 text-center text-xs text-muted-foreground/40"
                 >
                     &copy; {new Date().getFullYear()} Credix Financial Systems. Todos os direitos reservados.
