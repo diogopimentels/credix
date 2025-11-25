@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
-import { motion } from "framer-motion";
+import { MobileAwareMotion } from "@/components/ui/MobileAwareMotion";
 
 interface StatCardProps {
     title: string;
@@ -18,20 +18,20 @@ interface StatCardProps {
 
 export function StatCard({ title, value, description, icon: Icon, trend, className, delay = 0 }: StatCardProps) {
     return (
-        <motion.div
+        <MobileAwareMotion
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
             transition={{ duration: 0.4, delay }}
+            disableOnMobile={true}
         >
-            <Card className={cn("overflow-hidden relative border-white/10 bg-card/50 backdrop-blur-sm hover:shadow-glow transition-all duration-500 group", className)}>
-                <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform duration-500 group-hover:scale-110" />
+            <Card className={cn("overflow-hidden relative bg-card/50 backdrop-blur-sm min-w-0 w-full border-0", className)}>
+                <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8" />
 
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-                    <CardTitle className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
                         {title}
                     </CardTitle>
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-sm">
                         <Icon className="h-5 w-5" />
                     </div>
                 </CardHeader>
@@ -58,6 +58,6 @@ export function StatCard({ title, value, description, icon: Icon, trend, classNa
                     )}
                 </CardContent>
             </Card>
-        </motion.div>
+        </MobileAwareMotion>
     );
 }
