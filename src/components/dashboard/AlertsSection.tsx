@@ -63,25 +63,25 @@ export function AlertsSection() {
                             <motion.div
                                 key={alert.id}
                                 variants={isMobile ? {} : itemVariants}
-                                className="flex items-center justify-between bg-background p-4 rounded-lg border shadow-sm"
+                                className="flex flex-col sm:flex-row sm:items-center justify-between bg-background p-4 rounded-lg border shadow-sm gap-4 w-full max-w-full overflow-hidden"
                             >
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2 bg-destructive/10 rounded-full">
+                                <div className="flex items-center gap-4 min-w-0 w-full">
+                                    <div className="p-2 bg-destructive/10 rounded-full shrink-0">
                                         <AlertTriangle className="h-4 w-4 text-destructive" />
                                     </div>
-                                    <div>
-                                        <p className="font-medium truncate max-w-[150px] sm:max-w-[200px]">{alert.clientName || "Cliente"}</p>
-                                        <p className="text-sm text-muted-foreground truncate max-w-[200px] sm:max-w-xs">
+                                    <div className="min-w-0 flex-1">
+                                        <p className="font-medium truncate w-full">{alert.clientName || "Cliente"}</p>
+                                        <p className="text-sm text-muted-foreground truncate w-full">
                                             Venceu em {format(new Date(alert.dueDate), 'dd/MM/yyyy')} • {alert.daysLate} dias de atraso
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="text-right">
+                                <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto mt-2 sm:mt-0">
+                                    <div className="text-left sm:text-right">
                                         <p className="font-bold text-destructive">{formatCurrency(alert.totalAmount)}</p>
                                         <p className="text-xs text-muted-foreground">Valor atualizado</p>
                                     </div>
-                                    <Button size="sm" variant="outline" asChild>
+                                    <Button size="sm" variant="outline" asChild className="shrink-0">
                                         <Link to={`/loans/${alert.id}`}>Ver Detalhes</Link>
                                     </Button>
                                 </div>
