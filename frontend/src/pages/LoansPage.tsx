@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { DollarSign, Filter, MoreHorizontal, Plus, MessageCircle, Edit2, Calendar as CalendarIcon } from "lucide-react"
+import { DollarSign, Filter, MoreHorizontal, Plus, Edit2, Calendar as CalendarIcon } from "lucide-react"
 import { Loan } from "@/mocks/handlers"
 import { fetchJson } from "@/lib/api"
 import { PageHeader } from "@/components/ui/PageHeader"

@@ -8,7 +8,6 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
 
 export function DemoWelcomeModal() {
     const [open, setOpen] = useState(false);
@@ -92,7 +91,7 @@ export function DemoWelcomeModal() {
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="w-[90vw] max-w-md rounded-2xl bg-card/80 backdrop-blur-xl border-white/10 shadow-2xl">
                 <DialogHeader>
-                    <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-4">
+                    <div className="mx-auto w-fit mb-4">
                         <img
                             src="/logo.png"
                             alt="Logo CrediMestre"
@@ -100,7 +99,7 @@ export function DemoWelcomeModal() {
                         />
                     </div>
                     <DialogTitle className="text-center text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                        Bem-vindo ao CrediMestre
+                        Bem-vindo ao Credix
                     </DialogTitle>
                     <DialogDescription className="text-center text-base">
                         Este é um ambiente de demonstração. Todos os dados ficam salvos apenas no seu navegador.
@@ -115,7 +114,6 @@ export function DemoWelcomeModal() {
 
                 <DialogFooter className="flex-col gap-2 sm:gap-0">
                     <Button onClick={handleSeedData} className="w-full bg-primary hover:bg-primary/90 h-11 text-base shadow-lg shadow-primary/20">
-                        <Sparkles className="w-4 h-4 mr-2" />
                         Preencher com Dados de Teste
                     </Button>
                     <Button variant="ghost" onClick={handleClose} className="w-full mt-2">
