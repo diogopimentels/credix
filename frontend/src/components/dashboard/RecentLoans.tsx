@@ -12,10 +12,13 @@ import { format } from "date-fns"
 import { ArrowUpRight } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
+import { StatusBadge } from "@/components/ui/StatusBadge"
+import { getWhatsAppLink } from "@/utils/whatsapp"
 
 interface RecentLoan {
     id: string
     clientName: string
+    clientPhone?: string
     amount: number
     status: LoanStatus
     dueDate: string
@@ -23,8 +26,6 @@ interface RecentLoan {
         totalAmount: number
     }
 }
-
-
 
 const getStatusLabel = (status: LoanStatus) => {
     switch (status) {
@@ -36,10 +37,6 @@ const getStatusLabel = (status: LoanStatus) => {
         default: return status
     }
 }
-
-import { StatusBadge } from "@/components/ui/StatusBadge"
-
-// ... (keep interfaces and helpers if needed, or import them)
 
 const getStatusType = (status: LoanStatus): "success" | "warning" | "error" | "info" | "neutral" => {
     switch (status) {
@@ -88,9 +85,28 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                                         <TableCell className="font-medium">{formatCurrency(loan.details.totalAmount)}</TableCell>
                                         <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
                                         <TableCell className="text-right pr-0">
-                                            <StatusBadge status={getStatusType(loan.status)}>
-                                                {getStatusLabel(loan.status)}
-                                            </StatusBadge>
+                                            <div className="flex items-center justify-end gap-2">
+                                                {(loan.status === 'NEAR_DUE' || loan.status === 'DUE' || loan.status === 'LATE') && loan.clientPhone && (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7 hover:bg-transparent"
+                                                        title="Enviar cobrança via WhatsApp"
+                                                        asChild
+                                                    >
+                                                        <a
+                                                            href={getWhatsAppLink(loan.clientPhone, loan.clientName, loan.details.totalAmount, loan.dueDate)}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <img src="/whatsapp.png" alt="WhatsApp" className="h-3.5 w-3.5 object-contain" />
+                                                        </a>
+                                                    </Button>
+                                                )}
+                                                <StatusBadge status={getStatusType(loan.status)}>
+                                                    {getStatusLabel(loan.status)}
+                                                </StatusBadge>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -108,9 +124,28 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                                 </div>
                                 <div className="flex flex-col items-end gap-2">
                                     <span className="font-bold text-sm">{formatCurrency(loan.amount)}</span>
-                                    <StatusBadge status={getStatusType(loan.status)}>
-                                        {getStatusLabel(loan.status)}
-                                    </StatusBadge>
+                                    <div className="flex items-center gap-2">
+                                        {(loan.status === 'NEAR_DUE' || loan.status === 'DUE' || loan.status === 'LATE') && loan.clientPhone && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-7 w-7 hover:bg-transparent"
+                                                title="Enviar cobrança via WhatsApp"
+                                                asChild
+                                            >
+                                                <a
+                                                    href={getWhatsAppLink(loan.clientPhone, loan.clientName, loan.details.totalAmount, loan.dueDate)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <img src="/whatsapp.png" alt="WhatsApp" className="h-3.5 w-3.5 object-contain" />
+                                                </a>
+                                            </Button>
+                                        )}
+                                        <StatusBadge status={getStatusType(loan.status)}>
+                                            {getStatusLabel(loan.status)}
+                                        </StatusBadge>
+                                    </div>
                                 </div>
                             </div>
                         ))}

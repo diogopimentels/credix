@@ -23,6 +23,7 @@ export interface Loan {
 
 export interface EnhancedLoan extends Loan {
     clientName?: string
+    clientPhone?: string
     status: LoanStatus
     totalAmount: number
     interestAmount: number
@@ -142,6 +143,7 @@ export const handlers = [
             return {
                 ...loan,
                 clientName: client?.name,
+                clientPhone: client?.phone,
                 ...details,
                 // Translate status to Portuguese
                 status: translateStatus(details.status) as any
@@ -178,6 +180,7 @@ export const handlers = [
         return HttpResponse.json({
             ...loan,
             client,
+            clientPhone: client?.phone,
             ...details,
             // Translate status to Portuguese
             status: translateStatus(details.status) as any
@@ -240,6 +243,7 @@ export const handlers = [
             return {
                 ...l,
                 clientName: client?.name || 'Desconhecido',
+                clientPhone: client?.phone,
                 // Translate status to Portuguese
                 status: translateStatus(details.status),
                 dueDate: details.dueDate.toISOString(),

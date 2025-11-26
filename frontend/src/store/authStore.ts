@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface AuthState {
     isAuthenticated: boolean;
@@ -7,15 +8,22 @@ interface AuthState {
     logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-    isAuthenticated: false,
-    user: null,
-    login: (email, password) => {
-        if (email === 'admin@credix.com' && password === 'admin') {
-            set({ isAuthenticated: true, user: { name: 'Admin', role: 'admin', email: 'admin@credix.com' } });
-            return true;
+export const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
+            isAuthenticated: false,
+            user: null,
+            login: (email, password) => {
+                if (email === 'admin@credix.com' && password === 'admin') {
+                    set({ isAuthenticated: true, user: { name: 'Admin', role: 'admin', email: 'admin@credix.com' } });
+                    return true;
+                }
+                return false;
+            },
+            logout: () => set({ isAuthenticated: false, user: null }),
+        }),
+        {
+            name: 'auth-storage', // unique name for localStorage key
         }
-        return false;
-    },
-    logout: () => set({ isAuthenticated: false, user: null }),
-}));
+    )
+);

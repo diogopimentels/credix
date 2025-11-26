@@ -8,23 +8,29 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuthStore } from "@/store/authStore"
-import { Menu, User, Bell, Search } from "lucide-react"
+import { User, Bell, Search } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
 
 interface HeaderProps {
-    onMenuClick: () => void
+    onMenuClick?: () => void
 }
 
-export function Header({ onMenuClick }: HeaderProps) {
+export function Header({ }: HeaderProps) {
     const { user, logout } = useAuthStore()
 
     return (
         <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
             <div className="flex h-16 items-center px-4 md:px-8 justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" className="md:hidden hover:bg-primary/10 hover:text-primary" onClick={onMenuClick}>
-                        <Menu className="h-5 w-5" />
-                    </Button>
+                    {/* Mobile Logo */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <div className="flex items-center gap-2">
+                            <img src="/logo.png" alt="Credix" className="w-8 h-8 object-contain" />
+                            <span className="font-bold text-lg">Credix</span>
+                        </div>
+                    </div>
+
+                    {/* Menu button removed as we use MobileNav */}
 
                     {/* Desktop Search Bar */}
                     <div className="hidden md:flex items-center gap-2 rounded-md border border-border/60 bg-background/70 px-3 h-10 w-[300px] focus-within:border-primary/80 focus-within:ring-1 focus-within:ring-ring transition-all duration-300">

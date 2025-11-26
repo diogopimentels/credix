@@ -10,6 +10,7 @@ import { ClientDetailsPage } from "@/pages/ClientDetailsPage"
 import { LoansPage } from "@/pages/LoansPage"
 import { LoanDetailsPage } from "@/pages/LoanDetailsPage"
 import { CloseMonthPage } from "@/pages/CloseMonthPage"
+import { CalculatorPage } from "@/pages/CalculatorPage"
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
@@ -30,6 +31,7 @@ function App() {
                         <Route path="clients/:id" element={<ClientDetailsPage />} />
                         <Route path="loans" element={<LoansPage />} />
                         <Route path="loans/:id" element={<LoanDetailsPage />} />
+                        <Route path="calculator" element={<CalculatorPage />} />
                         <Route path="close-month" element={<CloseMonthPage />} />
                     </Route>
                 </Routes>

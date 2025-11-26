@@ -1,38 +1,28 @@
-import { useState } from "react"
 import { Outlet } from "react-router-dom"
-import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Header } from "./Header"
+import { MobileNav } from "./MobileNav"
+import { DemoWelcomeModal } from "../common/DemoWelcomeModal"
 
 export function Layout() {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
     return (
-        <div className="min-h-dvh bg-background flex relative overflow-hidden">
-            {/* Ambient Background */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/5 blur-[120px]" />
+        <div className="flex h-screen bg-background overflow-hidden">
+            <DemoWelcomeModal />
+            {/* Sidebar - Hidden on mobile, visible on md+ */}
+            <div className="hidden md:block w-64 flex-shrink-0">
+                <Sidebar />
             </div>
 
-            {/* Desktop Sidebar */}
-            <aside className="hidden md:block w-72 border-r border-border/40 bg-card/30 backdrop-blur-xl fixed inset-y-0 z-30">
-                <Sidebar />
-            </aside>
-
-            {/* Mobile Sidebar */}
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                <SheetContent side="left" className="p-0 w-72 border-r border-border/40 bg-card/95 backdrop-blur-xl">
-                    <Sidebar />
-                </SheetContent>
-            </Sheet>
-
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col md:pl-72 min-h-dvh transition-all duration-300 relative z-10">
-                <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
-                <main className="flex-1 overflow-x-hidden p-4 md:p-8">
-                    <Outlet />
+            <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+                <Header />
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 scroll-smooth">
+                    <div className="max-w-7xl mx-auto w-full">
+                        <Outlet />
+                    </div>
                 </main>
+
+                {/* Mobile Navigation - Visible on mobile only */}
+                <MobileNav />
             </div>
         </div>
     )

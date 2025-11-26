@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Search, MoreHorizontal, User, Phone, MapPin, Plus } from "lucide-react"
+import { Search, MoreHorizontal, User, Plus } from "lucide-react"
 import { Client } from "@/mocks/handlers"
 import { fetchJson } from "@/lib/api"
 import { PageHeader } from "@/components/ui/PageHeader"
@@ -27,6 +27,7 @@ import {
 import { motion } from "framer-motion"
 import { ClientDialog } from "@/components/clients/ClientDialog"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { MobileEntityCard } from "@/components/common/MobileEntityCard"
 
 export function ClientsPage() {
     const [clients, setClients] = useState<Client[]>([])
@@ -107,7 +108,7 @@ export function ClientsPage() {
                     { label: "Clientes" }
                 ]}
                 actions={
-                        <ClientDialog onSave={fetchClients} client={selectedClient}>
+                    <ClientDialog onSave={fetchClients} client={selectedClient}>
                         <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
                             onClick={() => {
                                 setSelectedClient(undefined)
@@ -250,43 +251,40 @@ export function ClientsPage() {
                                     <motion.div
                                         key={client.id}
                                         variants={itemVariants}
-                                        className="flex items-center gap-4 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/10 hover:bg-muted/20 transition-colors"
                                     >
-                                        <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-black/5 dark:ring-white/10 shrink-0">
-                                            {client.photo ? (
-                                                <img src={client.photo} alt={client.name} className="h-full w-full object-cover" />
-                                            ) : (
-                                                <div className="h-full w-full bg-muted flex items-center justify-center">
-                                                    <User className="h-6 w-6 text-muted-foreground" />
+                                        <MobileEntityCard
+                                            title={client.name}
+                                            subtitle={client.phone}
+                                            details={[
+                                                { label: "Endereço", value: client.address }
+                                            ]}
+                                            actions={
+                                                <div className="flex gap-2 w-full">
+                                                    <Button
+                                                        variant="outline"
+                                                        className="flex-1 h-9 text-xs"
+                                                        asChild
+                                                    >
+                                                        <Link to={`/clients/${client.id}`}>Detalhes</Link>
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        className="flex-1 h-9 text-xs"
+                                                        onClick={() => handleEdit(client)}
+                                                    >
+                                                        Editar
+                                                    </Button>
+                                                    <Button
+                                                        variant="destructive"
+                                                        className="h-9 w-9 p-0 shrink-0"
+                                                        onClick={() => handleDelete(client)}
+                                                    >
+                                                        <span className="sr-only">Excluir</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>
+                                                    </Button>
                                                 </div>
-                                            )}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-medium text-foreground truncate">{client.name}</p>
-                                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                                                <Phone className="h-3 w-3" />
-                                                <span>{client.phone}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5 truncate">
-                                                <MapPin className="h-3 w-3 shrink-0" />
-                                                <span className="truncate">{client.address}</span>
-                                            </div>
-                                        </div>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2">
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-xl border-black/5 dark:border-white/10">
-                                                <DropdownMenuItem asChild>
-                                                    <Link to={`/clients/${client.id}`}>Ver Detalhes</Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => handleEdit(client)}>Editar</DropdownMenuItem>
-                                                <DropdownMenuSeparator className="bg-border/50" />
-                                                <DropdownMenuItem onClick={() => handleDelete(client)} className="text-destructive">Excluir</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                            }
+                                        />
                                     </motion.div>
                                 ))
                             )}

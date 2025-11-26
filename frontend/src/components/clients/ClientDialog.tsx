@@ -1,13 +1,5 @@
 import { Button } from "@/components/ui/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -101,122 +93,117 @@ export function ClientDialog({ client, onSave, children }: { client?: Client, on
     const isFormValid = formData.name && formData.phone && formData.address
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-3xl p-0">
-                <DialogHeader className="p-6 pb-4 border-b bg-muted/20">
-                    <DialogTitle className="text-2xl">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
-                    <DialogDescription>
-                        {client ? "Atualize as informações do cliente." : "Adicione um novo cliente à sua base de dados."}
-                    </DialogDescription>
-                </DialogHeader>
-
-                <div className="flex flex-col gap-6 px-6 pb-6 overflow-y-auto max-h-[70vh]">
-                    {/* Profile Header Section - Horizontal Layout */}
-                    <div className="flex items-start gap-6">
-                        {/* Avatar with Upload Button */}
-                        <div className="relative flex-shrink-0">
-                            <div className="h-20 w-20 rounded-full border-2 border-muted overflow-hidden bg-primary/10 flex items-center justify-center">
-                                {photoPreview ? (
-                                    <img src={photoPreview} alt="Client Avatar" className="h-full w-full object-cover" />
-                                ) : (
-                                    <User className="h-10 w-10 text-primary" />
-                                )}
-                            </div>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                onClick={handlePhotoClick}
-                                className="absolute -bottom-1 -right-1 h-7 w-7 rounded-full shadow-md bg-background hover:bg-muted"
-                                type="button"
-                            >
-                                <Camera className="h-3.5 w-3.5" />
-                            </Button>
+        <ResponsiveDialog
+            open={open}
+            onOpenChange={setOpen}
+            trigger={children}
+            title={client ? "Editar Cliente" : "Novo Cliente"}
+            description={client ? "Atualize as informações do cliente." : "Adicione um novo cliente à sua base de dados."}
+        >
+            <div className="flex flex-col gap-6 overflow-y-auto max-h-[70vh] p-1">
+                {/* Profile Header Section - Horizontal Layout */}
+                <div className="flex items-start gap-6">
+                    {/* Avatar with Upload Button */}
+                    <div className="relative flex-shrink-0">
+                        <div className="h-20 w-20 rounded-full border-2 border-muted overflow-hidden bg-primary/10 flex items-center justify-center">
+                            {photoPreview ? (
+                                <img src={photoPreview} alt="Client Avatar" className="h-full w-full object-cover" />
+                            ) : (
+                                <User className="h-10 w-10 text-primary" />
+                            )}
                         </div>
-
-                        {/* Name and Phone - Side by Side */}
-                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="name" className="text-sm font-medium">Nome Completo</Label>
-                                <Input
-                                    id="name"
-                                    value={formData.name}
-                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder="Ex: João da Silva"
-                                    className="h-11"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="phone" className="text-sm font-medium">Telefone</Label>
-                                <Input
-                                    id="phone"
-                                    value={formData.phone}
-                                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                    placeholder="(11) 98765-4321"
-                                    className="h-11"
-                                />
-                            </div>
-                        </div>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handlePhotoClick}
+                            className="absolute -bottom-1 -right-1 h-7 w-7 rounded-full shadow-md bg-background hover:bg-muted"
+                            type="button"
+                        >
+                            <Camera className="h-3.5 w-3.5" />
+                        </Button>
                     </div>
 
-                    {/* Form Body Section */}
-                    <div className="space-y-4">
+                    {/* Name and Phone - Side by Side */}
+                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="address" className="text-sm font-medium">Endereço Completo</Label>
+                            <Label htmlFor="name" className="text-sm font-medium">Nome Completo</Label>
                             <Input
-                                id="address"
-                                value={formData.address}
-                                onChange={e => setFormData({ ...formData, address: e.target.value })}
-                                placeholder="Rua das Flores, 123, São Paulo, SP"
+                                id="name"
+                                value={formData.name}
+                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                placeholder="Ex: João da Silva"
                                 className="h-11"
                             />
                         </div>
-
                         <div className="space-y-2">
-                            <Label htmlFor="notes" className="text-sm font-medium">Notas</Label>
-                            <Textarea
-                                id="notes"
-                                value={formData.notes}
-                                onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                                placeholder="Informações adicionais sobre o cliente..."
-                                className="min-h-[80px] resize-none"
+                            <Label htmlFor="phone" className="text-sm font-medium">Telefone</Label>
+                            <Input
+                                id="phone"
+                                type="tel"
+                                value={formData.phone}
+                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                placeholder="(11) 98765-4321"
+                                className="h-11"
                             />
                         </div>
-                    </div>
-
-                    {/* Optimized Upload Section - Side by Side with Compact Height */}
-                    <div className="pt-4 border-t">
-                        <div className="grid grid-cols-2 gap-4">
-                            <UploadDocument
-                                label="Comprovante"
-                                onFileUpload={(file) => setFormData(prev => ({ ...prev, residenceProof: file }))}
-                            />
-                            <UploadVideo
-                                label="Vídeo"
-                                onFileUpload={(file) => setFormData(prev => ({ ...prev, clientVideo: file }))}
-                            />
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">
-                            Use os campos acima para anexar documentos de verificação (opcional)
-                        </p>
                     </div>
                 </div>
 
-                <DialogFooter className="bg-muted/30 p-6 border-t">
+                {/* Form Body Section */}
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="address" className="text-sm font-medium">Endereço Completo</Label>
+                        <Input
+                            id="address"
+                            value={formData.address}
+                            onChange={e => setFormData({ ...formData, address: e.target.value })}
+                            placeholder="Rua das Flores, 123, São Paulo, SP"
+                            className="h-11"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="notes" className="text-sm font-medium">Notas</Label>
+                        <Textarea
+                            id="notes"
+                            value={formData.notes}
+                            onChange={e => setFormData({ ...formData, notes: e.target.value })}
+                            placeholder="Informações adicionais sobre o cliente..."
+                            className="min-h-[80px] resize-none"
+                        />
+                    </div>
+                </div>
+
+                {/* Optimized Upload Section - Side by Side with Compact Height */}
+                <div className="pt-4 border-t">
+                    <div className="grid grid-cols-2 gap-4">
+                        <UploadDocument
+                            label="Comprovante"
+                            onFileUpload={(file) => setFormData(prev => ({ ...prev, residenceProof: file }))}
+                        />
+                        <UploadVideo
+                            label="Vídeo"
+                            onFileUpload={(file) => setFormData(prev => ({ ...prev, clientVideo: file }))}
+                        />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                        Use os campos acima para anexar documentos de verificação (opcional)
+                    </p>
+                </div>
+
+                <div className="pt-4">
                     <Button
                         type="submit"
                         onClick={handleSave}
                         disabled={loading || !isFormValid}
                         size="lg"
-                        className="w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                        className="w-full shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] touch-manipulation"
                     >
                         {loading ? "Salvando..." : (client ? "Salvar Alterações" : "Salvar Cliente")}
                         {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </div>
+            </div>
+        </ResponsiveDialog>
     )
 }

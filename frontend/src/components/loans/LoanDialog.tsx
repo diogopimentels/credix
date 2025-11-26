@@ -1,13 +1,5 @@
 import { Button } from "@/components/ui/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -79,12 +71,12 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
                     termDays: parseInt(formData.termDays)
                 })
             })
-            
+
             if (!res.ok) {
                 const errorText = await res.text()
                 throw new Error(`Request failed with status ${res.status}: ${errorText}`)
             }
-            
+
             const result = await res.json()
             console.log('Loan saved successfully:', result)
             setOpen(false)
@@ -98,76 +90,73 @@ export function LoanDialog({ loan, onSave, children }: { loan?: Loan, onSave: ()
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-lg p-0">
-                <DialogHeader className="p-6 pb-4">
-                    <DialogTitle>{loan ? "Editar Empréstimo" : "Novo Empréstimo"}</DialogTitle>
-                    <DialogDescription>
-                        {loan ? "Atualize os detalhes do empréstimo." : "Crie um novo empréstimo com juros de 40%."}
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col gap-5 px-6 pb-6 overflow-y-auto max-h-[70vh]">
-                    <div className="space-y-2">
-                        <Label htmlFor="client">Cliente</Label>
-                        <Select
-                            value={formData.clientId}
-                            onValueChange={(value) => setFormData({ ...formData, clientId: value })}
-                            disabled={!!loan}
-                        >
-                            <SelectTrigger id="client">
-                                <SelectValue placeholder="Selecione um cliente" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {clients.map(client => (
-                                    <SelectItem key={client.id} value={client.id}>{client.name}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="amount">Valor (R$)</Label>
-                            <Input
-                                id="amount"
-                                type="number"
-                                value={formData.amount}
-                                onChange={e => setFormData({ ...formData, amount: e.target.value })}
-                                placeholder="1000.00"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="date">Data Início</Label>
-                            <Input
-                                id="date"
-                                type="date"
-                                value={formData.startDate}
-                                onChange={e => setFormData({ ...formData, startDate: e.target.value })}
-                            />
-                        </div>
-                    </div>
-                    
-                    {principalAmount > 0 &&
-                        <SimulationBox amount={principalAmount} total={totalAmount} interestRate={interestRate} />
-                    }
-
+        <ResponsiveDialog
+            open={open}
+            onOpenChange={setOpen}
+            trigger={children}
+            title={loan ? "Editar Empréstimo" : "Novo Empréstimo"}
+            description={loan ? "Atualize os detalhes do empréstimo." : "Crie um novo empréstimo com juros de 40%."}
+        >
+            <div className="flex flex-col gap-5 overflow-y-auto max-h-[70vh] p-1">
+                <div className="space-y-2">
+                    <Label htmlFor="client">Cliente</Label>
+                    <Select
+                        value={formData.clientId}
+                        onValueChange={(value) => setFormData({ ...formData, clientId: value })}
+                        disabled={!!loan}
+                    >
+                        <SelectTrigger id="client" className="h-11">
+                            <SelectValue placeholder="Selecione um cliente" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {clients.map(client => (
+                                <SelectItem key={client.id} value={client.id}>{client.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
-                <DialogFooter className="bg-muted/30 p-6 flex flex-row sm:justify-between items-center">
-                     <p className="text-sm text-muted-foreground hidden sm:block">Verifique os dados antes de salvar.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="amount">Valor (R$)</Label>
+                        <Input
+                            id="amount"
+                            type="number"
+                            inputMode="decimal"
+                            value={formData.amount}
+                            onChange={e => setFormData({ ...formData, amount: e.target.value })}
+                            placeholder="1000.00"
+                            className="h-11"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="date">Data Início</Label>
+                        <Input
+                            id="date"
+                            type="date"
+                            value={formData.startDate}
+                            onChange={e => setFormData({ ...formData, startDate: e.target.value })}
+                            className="h-11"
+                        />
+                    </div>
+                </div>
+
+                {principalAmount > 0 &&
+                    <SimulationBox amount={principalAmount} total={totalAmount} interestRate={interestRate} />
+                }
+
+                <div className="pt-4">
                     <Button
                         type="submit"
                         onClick={handleSave}
                         disabled={loading || !isFormValid}
                         size="lg"
-                        className="w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                        className="w-full shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] touch-manipulation"
                     >
                         {loading ? "Salvando..." : (loan ? "Salvar Alterações" : "Criar Empréstimo")}
                         {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </div>
+            </div>
+        </ResponsiveDialog>
     )
 }
