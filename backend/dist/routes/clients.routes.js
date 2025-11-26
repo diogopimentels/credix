@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clientsRoutes = void 0;
+const express_1 = require("express");
+const ClientsController_1 = require("../controllers/ClientsController");
+const ClientsService_1 = require("../services/ClientsService");
+const ClientsRepository_1 = require("../repositories/ClientsRepository");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const clientsRoutes = (0, express_1.Router)();
+exports.clientsRoutes = clientsRoutes;
+const clientsRepository = new ClientsRepository_1.ClientsRepository();
+const clientsService = new ClientsService_1.ClientsService(clientsRepository);
+const clientsController = new ClientsController_1.ClientsController(clientsService);
+clientsRoutes.use(authMiddleware_1.authMiddleware);
+clientsRoutes.post('/', (req, res) => clientsController.create(req, res));
+clientsRoutes.get('/', (req, res) => clientsController.index(req, res));
+clientsRoutes.get('/:id', (req, res) => clientsController.show(req, res));
+clientsRoutes.put('/:id', (req, res) => clientsController.update(req, res));

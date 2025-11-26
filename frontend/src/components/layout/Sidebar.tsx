@@ -3,7 +3,7 @@ import {
     LayoutDashboard,
     Users,
     Wallet,
-    Calendar, // Changed from PieChart
+    Calendar,
     LogOut,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -14,8 +14,7 @@ const sidebarItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Users, label: "Clientes", href: "/clients" },
     { icon: Wallet, label: "Empréstimos", href: "/loans" },
-    { icon: Calendar, label: "Fechamento Mensal", href: "/close-month" }, // Changed to Close Month
-    // { icon: Settings, label: "Configurações", href: "/settings" }, // Removed Settings
+    { icon: Calendar, label: "Fechamento Mensal", href: "/close-month" },
 ];
 
 export function Sidebar() {
@@ -24,18 +23,15 @@ export function Sidebar() {
     return (
         <div className="flex flex-col h-full bg-card/50 backdrop-blur-xl border-r border-border/50">
             <div className="p-6">
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-lg shadow-primary/25">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                    </div>
-                    <span className="font-heading font-bold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-                        Credix
-                    </span>
+                {/* LOGO SECTION START */}
+                <div className="flex items-center justify-start gap-3 mb-8">
+                    <img 
+                        src="/logo.png" 
+                        alt="Logo Credimestre" 
+                        className="h-12 w-auto object-contain drop-shadow-md" 
+                    />
                 </div>
+                {/* LOGO SECTION END */}
 
                 <nav className="space-y-1">
                     {sidebarItems.map((item) => {
@@ -71,7 +67,7 @@ export function Sidebar() {
                         <span className="font-bold text-sm text-primary">AD</span>
                     </div>
                     <div className="flex-1 overflow-hidden">
-                        <p className="text-sm font-medium truncate">Admin User</p>
+                        <p className="text-sm font-medium truncate">Usuário Admin</p>
                         <p className="text-xs text-muted-foreground truncate">admin@credix.com</p>
                     </div>
                 </div>

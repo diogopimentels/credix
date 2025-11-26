@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dashboardRoutes = void 0;
+const express_1 = require("express");
+const DashboardController_1 = require("../controllers/DashboardController");
+const DashboardService_1 = require("../services/DashboardService");
+const LoansRepository_1 = require("../repositories/LoansRepository");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const dashboardRoutes = (0, express_1.Router)();
+exports.dashboardRoutes = dashboardRoutes;
+const loansRepository = new LoansRepository_1.LoansRepository();
+const dashboardService = new DashboardService_1.DashboardService(loansRepository);
+const dashboardController = new DashboardController_1.DashboardController(dashboardService);
+dashboardRoutes.use(authMiddleware_1.authMiddleware);
+dashboardRoutes.get('/', (req, res) => dashboardController.index(req, res));

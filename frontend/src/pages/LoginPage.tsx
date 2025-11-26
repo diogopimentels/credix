@@ -45,23 +45,22 @@ export function LoginPage() {
                 className="w-full max-w-md px-4 relative z-10"
             >
                 <div className="mb-8 text-center">
+                    {/* LOGO SECTION START */}
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.5 }}
-                        className="inline-flex items-center justify-center gap-2 mb-4"
+                        className="flex justify-center mb-6"
                     >
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-lg shadow-primary/25">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-                                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </div>
-                        <span className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-                            Credix
-                        </span>
+                        {/* Substituído o ícone e texto pela Logo */}
+                        <img 
+                            src="/logo.png" 
+                            alt="Logo Credimestre" 
+                            className="h-20 w-auto object-contain drop-shadow-xl"
+                        />
                     </motion.div>
+                    {/* LOGO SECTION END */}
+
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

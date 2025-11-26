@@ -115,31 +115,57 @@ export function CloseMonthPage() {
                 </div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <Card className="border-l-4 border-l-blue-500 shadow-sm">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total Emprestado</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{formatCurrency(totalLent)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Volume total movimentado</p>
                     </CardContent>
                 </Card>
+
                 <Card className="border-l-4 border-l-green-500 shadow-sm">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total Recebido</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-green-600">{formatCurrency(totalReceived)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Retorno sobre capital</p>
                     </CardContent>
                 </Card>
+
                 <Card className="border-l-4 border-l-orange-500 shadow-sm">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Juros Gerados</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{formatCurrency(totalInterest)}</div>
+                        <div className="text-2xl font-bold text-orange-600">{formatCurrency(totalInterest)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">40% sobre empréstimos atrasados</p>
                     </CardContent>
                 </Card>
+
+                <Card className="border-l-4 border-l-red-500 shadow-sm">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Multas Aplicadas</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-red-600">{formatCurrency(totalFines)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">R$ 50,00 por dia de atraso</p>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-amber-500 shadow-sm">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Total em Aberto</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-amber-600">{formatCurrency(totalLent - totalReceived)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Valores a receber</p>
+                    </CardContent>
+                </Card>
+
                 <Card className="border-l-4 border-l-primary shadow-sm bg-primary/5">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-primary">Lucro Estimado</CardTitle>
@@ -148,6 +174,7 @@ export function CloseMonthPage() {
                         <div className="text-2xl font-bold text-primary">
                             {formatCurrency(totalInterest + totalFines)}
                         </div>
+                        <p className="text-xs text-primary/70 mt-1">Receita líquida gerada</p>
                     </CardContent>
                 </Card>
             </div>

@@ -1,6 +1,7 @@
 import { differenceInCalendarDays, addDays, isAfter, startOfDay } from 'date-fns';
 
 export type LoanStatus = 'ONGOING' | 'NEAR_DUE' | 'DUE' | 'LATE' | 'PAID';
+export type LoanStatusPT = 'EM ANDAMENTO' | 'A VENCER' | 'VENCE HOJE' | 'ATRASADO' | 'PAGO';
 
 export interface LoanCalculationResult {
     initialAmount: number;
@@ -18,6 +19,27 @@ export const LOAN_TERMS = {
     DAILY_FINE: 50, // R$ 50.00
 };
 
+/**
+ * Translate loan status from English to Portuguese
+ */
+export function translateStatus(status: LoanStatus): LoanStatusPT {
+    const translations: Record<LoanStatus, LoanStatusPT> = {
+        'ONGOING': 'EM ANDAMENTO',
+        'NEAR_DUE': 'A VENCER',
+        'DUE': 'VENCE HOJE',
+        'LATE': 'ATRASADO',
+        'PAID': 'PAGO'
+    };
+    return translations[status];
+}
+
+/**
+ * Calculate loan details including status, interest, fines, and totals
+ * Business Rules:
+ * - Interest (40%): Applied ONLY if paid AFTER due date or currently late
+ * - Fine (R$ 50/day): Applied ONLY if paid AFTER due date or currently late
+ * - Due date: startDate + termDays
+ */
 export function calculateLoanDetails(
     amount: number,
     startDate: Date | string,
