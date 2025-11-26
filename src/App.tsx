@@ -5,6 +5,7 @@ import { MobileLayout } from "@/layouts/MobileLayout"
 import { LoginPage } from "@/pages/LoginPage"
 import { useAuthStore } from "@/store/authStore"
 import { useIsMobile } from "@/hooks/useIsMobile"
+import { MobileDebugOverlay } from "@/utils/mobile-debug"
 import { useEffect, useState } from "react"
 
 import { DashboardPage } from "@/pages/DashboardPage"
@@ -61,6 +62,7 @@ function LayoutSelector({ children }: { children: React.ReactNode }) {
 function App() {
     return (
         <ThemeProvider defaultTheme="system" storageKey="credimestre-theme">
+            <MobileDebugOverlay />
             <Router>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
