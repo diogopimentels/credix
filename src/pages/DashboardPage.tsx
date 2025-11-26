@@ -41,7 +41,7 @@ export function DashboardPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 mobile-page-padding">
             <PageHeader
                 title="Dashboard"
                 description="Visão geral da sua carteira de empréstimos e clientes."

@@ -71,7 +71,7 @@ export function CloseMonthPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 mobile-page-padding">
             <PageHeader
                 title="Fechamento do Mês"
                 description="Relatório financeiro consolidado."
