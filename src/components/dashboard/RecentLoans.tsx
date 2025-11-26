@@ -67,56 +67,43 @@ export function RecentLoans({ loans }: { loans: RecentLoan[] }) {
                 <div className="space-y-8">
                     {/* Desktop Table */}
                     <div className="hidden md:block">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="hover:bg-transparent border-none">
-                                    <TableHead className="pl-0">Cliente</TableHead>
-                                    <TableHead>Valor</TableHead>
-                                    <TableHead>Vencimento</TableHead>
-                                    <TableHead className="text-right pr-0">Status</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {loans.map((loan) => (
-                                    <TableRow key={loan.id} className="group cursor-pointer hover:bg-muted/50 border-none">
-                                        <TableCell className="font-medium group-hover:text-primary transition-colors pl-0 py-3">
-                                            <div className="flex flex-col">
-                                                <span>{loan.clientName}</span>
-                                                <span className="text-xs text-muted-foreground font-normal">Ref: {loan.id.slice(0, 8)}</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="font-medium">{formatCurrency(loan.details.totalAmount)}</TableCell>
-                                        <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
-                                        <TableCell className="text-right pr-0">
-                                            <StatusBadge status={getStatusType(loan.status)}>
-                                                {getStatusLabel(loan.status)}
-                                            </StatusBadge>
-                                        </TableCell>
+                        <div className="mobile-table-wrapper">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="hover:bg-transparent border-none">
+                                        <TableHead className="pl-0">Cliente</TableHead>
+                                        <TableHead>Valor</TableHead>
+                                        <TableHead>Vencimento</TableHead>
+                                        <TableHead className="text-right pr-0">Status</TableHead>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                                </TableHeader>
+                                <TableBody>
+                                    {loans.map((loan) => (
+                                        <TableRow key={loan.id} className="group cursor-pointer hover:bg-muted/50 border-none">
+                                            <TableCell className="font-medium group-hover:text-primary transition-colors pl-0 py-3">
+                                                <div className="flex flex-col">
+                                                    <span>{loan.clientName}</span>
+                                                    <span className="text-xs text-muted-foreground font-normal">Ref: {loan.id.slice(0, 8)}</span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="font-medium">{formatCurrency(loan.details.totalAmount)}</TableCell>
+                                            <TableCell className="text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</TableCell>
+                                            <TableCell className="text-right pr-0">
+                                                <StatusBadge status={getStatusType(loan.status)}>
+                                                    <p className="text-sm font-medium leading-none">{loan.clientName}</p>
+                                                    <p className="text-xs text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</p>
+                                                </div>
+                                                <div className="flex flex-col items-end gap-2">
+                                                    <span className="font-bold text-sm">{formatCurrency(loan.amount)}</span>
+                                                    <StatusBadge status={getStatusType(loan.status)}>
+                                                        {getStatusLabel(loan.status)}
+                                                    </StatusBadge>
+                                                </div>
+                                            </div>
+                            ))}
+                                        </div>
                     </div>
-
-                    {/* Mobile List */}
-                    <div className="md:hidden space-y-4">
-                        {loans.map((loan) => (
-                            <div key={loan.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none">{loan.clientName}</p>
-                                    <p className="text-xs text-muted-foreground">{format(new Date(loan.dueDate), 'dd/MM/yyyy')}</p>
-                                </div>
-                                <div className="flex flex-col items-end gap-2">
-                                    <span className="font-bold text-sm">{formatCurrency(loan.amount)}</span>
-                                    <StatusBadge status={getStatusType(loan.status)}>
-                                        {getStatusLabel(loan.status)}
-                                    </StatusBadge>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    )
+                            </CardContent>
+                        </Card>
+                        )
 }
