@@ -67,59 +67,37 @@ O **Credimestre** é uma aplicação web moderna e responsiva desenvolvida para 
 ## 📁 Estrutura do Projeto
 
 ```
-credimestre-prototype/
-├── public/                      # Arquivos estáticos
-│   └── mockServiceWorker.js    # Service Worker do MSW
-├── src/
-│   ├── components/             # Componentes React
-│   │   ├── ui/                # Componentes base (shadcn/ui)
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── dialog.tsx
-│   │   │   ├── input.tsx
-│   │   │   ├── table.tsx
-│   │   │   ├── StatusBadge.tsx
-│   │   │   └── PageHeader.tsx
-│   │   ├── layout/            # Componentes de layout
-│   │   │   ├── Layout.tsx
-│   │   │   ├── Sidebar.tsx
-│   │   │   └── MobileNav.tsx
-│   │   ├── dashboard/         # Componentes do dashboard
-│   │   │   ├── StatCard.tsx
-│   │   │   └── RevenueChart.tsx
-│   │   ├── clients/           # Componentes de clientes
-│   │   │   └── ClientDialog.tsx
-│   │   └── loans/             # Componentes de empréstimos
-│   │       ├── LoanDialog.tsx
-│   │       └── PaymentDialog.tsx
-│   ├── pages/                 # Páginas da aplicação
-│   │   ├── LoginPage.tsx
-│   │   ├── DashboardPage.tsx
-│   │   ├── ClientsPage.tsx
-│   │   ├── ClientDetailsPage.tsx
-│   │   ├── LoansPage.tsx
-│   │   ├── LoanDetailsPage.tsx
-│   │   └── CloseMonthPage.tsx
-│   ├── mocks/                 # Mock API (MSW)
-│   │   ├── browser.ts         # Setup MSW para browser
-│   │   └── handlers.ts        # API handlers e dados fake
-│   ├── store/                 # Zustand stores
-│   │   └── authStore.ts       # Store de autenticação
-│   ├── utils/                 # Utilitários
-│   │   ├── calculations.ts    # Cálculos de empréstimos
-│   │   └── cn.ts             # Merge classes Tailwind
-│   ├── lib/                   # Bibliotecas e configs
-│   │   └── utils.ts
-│   ├── App.tsx                # Componente raiz
-│   ├── main.tsx               # Entry point
-│   ├── index.css              # Estilos globais + Tailwind
-│   └── vite-env.d.ts          # Types do Vite
-├── .eslintrc.cjs              # Config ESLint
-├── tailwind.config.js         # Config Tailwind CSS
-├── tsconfig.json              # Config TypeScript
-├── vite.config.ts             # Config Vite
-├── package.json               # Dependencies
-└── README.md                  # Este arquivo
+credix-app/
+├── backend/                     # API Backend (Node.js + Prisma)
+│   ├── src/
+│   ├── prisma/
+│   ├── package.json
+│   └── README.md
+├── docs/                        # Documentação do projeto
+│   ├── ARCHITECTURE.md
+│   ├── COMPONENTS.md
+│   ├── API.md
+│   ├── DEVELOPMENT.md
+│   └── DESIGN_SYSTEM.md
+├── frontend/                    # Aplicação Frontend React
+│   ├── src/
+│   │   ├── components/         # Componentes React
+│   │   │   ├── ui/            # Componentes base (shadcn/ui)
+│   │   │   ├── layout/        # Componentes de layout
+│   │   │   ├── dashboard/     # Componentes do dashboard
+│   │   │   ├── clients/       # Componentes de clientes
+│   │   │   └── loans/         # Componentes de empréstimos
+│   │   ├── pages/             # Páginas da aplicação
+│   │   ├── mocks/             # Mock API (MSW)
+│   │   ├── store/             # Zustand stores
+│   │   ├── utils/             # Utilitários
+│   │   └── lib/               # Bibliotecas e configs
+│   ├── public/                # Arquivos estáticos
+│   ├── api/                   # Mock API handlers
+│   ├── data/                  # Mock database
+│   ├── package.json
+│   └── README.md
+└── README.md                   # Este arquivo
 ```
 
 ## 🚀 Instalação e Execução
@@ -133,9 +111,14 @@ credimestre-prototype/
 
 ```bash
 # Clone o repositório (ou use o código existente)
-cd credimestre-prototype
+cd credix-app
 
-# Instale as dependências
+# Instale as dependências do frontend
+cd frontend
+npm install
+
+# (Opcional) Instale as dependências do backend
+cd ../backend
 npm install
 ```
 

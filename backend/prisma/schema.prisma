@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user") // "admin" | "user"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  address   String
+  photoUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  loans     Loan[]
+
+  @@map("clients")
+}
+
+model Loan {
+  id           String    @id @default(uuid())
+  clientId     String
+  client       Client    @relation(fields: [clientId], references: [id])
+  principal    Decimal   @db.Decimal(10, 2)
+  interestRate Decimal   @default(40) @db.Decimal(5, 2)
+  totalAmount  Decimal   @db.Decimal(10, 2)
+  dueDate      DateTime
+  status       String    @default("pending") // "pending", "open", "late", "paid"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  payments     Payment[]
+
+  @@map("loans")
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  loanId    String
+  loan      Loan     @relation(fields: [loanId], references: [id])
+  amount    Decimal  @db.Decimal(10, 2)
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@map("payments")
+}
