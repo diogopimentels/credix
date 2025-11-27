@@ -60,25 +60,28 @@ export function AlertsSection() {
                             <motion.div
                                 key={alert.id}
                                 variants={itemVariants}
-                                className="flex items-center justify-between bg-background p-4 rounded-lg border shadow-sm"
+                                className="flex flex-col md:flex-row md:items-center justify-between bg-background p-4 rounded-lg border shadow-sm gap-4"
                             >
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2 bg-destructive/10 rounded-full">
+                                <div className="flex items-start md:items-center gap-4 w-full md:w-auto">
+                                    <div className="p-2 bg-destructive/10 rounded-full flex-shrink-0">
                                         <AlertTriangle className="h-4 w-4 text-destructive" />
                                     </div>
-                                    <div>
-                                        <p className="font-medium">{alert.clientName || "Cliente"}</p>
+                                    <div className="min-w-0">
+                                        <p className="font-medium truncate">{alert.clientName || "Cliente"}</p>
                                         <p className="text-sm text-muted-foreground">
                                             Venceu em {format(new Date(alert.dueDate), 'dd/MM/yyyy')} • {alert.daysLate} dias de atraso
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="text-right">
-                                        <p className="font-bold text-destructive">{formatCurrency(alert.totalAmount)}</p>
-                                        <p className="text-xs text-muted-foreground">Valor atualizado</p>
+                                <div className="flex flex-col md:flex-row items-end md:items-center gap-3 md:gap-4 w-full md:w-auto">
+                                    <div className="flex justify-between w-full md:w-auto md:block text-right">
+                                        <span className="md:hidden text-sm font-medium text-muted-foreground">Valor:</span>
+                                        <div>
+                                            <p className="font-bold text-destructive">{formatCurrency(alert.totalAmount)}</p>
+                                            <p className="text-xs text-muted-foreground hidden md:block">Valor atualizado</p>
+                                        </div>
                                     </div>
-                                    <Button size="sm" variant="outline" asChild>
+                                    <Button size="sm" variant="outline" className="w-full md:w-auto" asChild>
                                         <Link to={`/loans/${alert.id}`}>Ver Detalhes</Link>
                                     </Button>
                                 </div>

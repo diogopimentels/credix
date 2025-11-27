@@ -3,7 +3,8 @@ import { DashboardCards } from "@/components/dashboard/DashboardCards"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
 import { RecentLoans } from "@/components/dashboard/RecentLoans"
 import { AlertsSection } from "@/components/dashboard/AlertsSection"
-
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
 
 import { PageHeader } from "@/components/ui/PageHeader"
 import { fetchJson } from "@/lib/api"
@@ -48,7 +49,11 @@ export function DashboardPage() {
                 description="Visão geral da sua carteira de empréstimos e clientes."
                 actions={
                     <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Última atualização: Hoje, 14:30</span>
+                        <span className="text-sm text-muted-foreground mr-2">Última atualização: Hoje, 14:30</span>
+                        <Button id="tour-step-2" size="sm" className="gap-2">
+                            <Plus className="h-4 w-4" />
+                            Novo Empréstimo
+                        </Button>
                     </div>
                 }
             />

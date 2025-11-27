@@ -9,8 +9,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+import { useProductTour } from "@/hooks/useProductTour";
+
 export function DemoWelcomeModal() {
     const [open, setOpen] = useState(false);
+    const { startTour } = useProductTour();
 
     useEffect(() => {
         const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
@@ -22,9 +25,29 @@ export function DemoWelcomeModal() {
     const handleClose = () => {
         setOpen(false);
         localStorage.setItem("hasSeenWelcome", "true");
+        // Small delay to allow modal to close
+        setTimeout(() => {
+            startTour();
+        }, 500);
     };
 
     const handleSeedData = () => {
+        // Helper to get a date relative to today (at Noon to avoid timezone issues)
+        const getRelativeDate = (daysOffset: number) => {
+            const date = new Date();
+            date.setDate(date.getDate() + daysOffset);
+            date.setHours(12, 0, 0, 0); // Noon to be safe
+            return date;
+        };
+
+        // Helper to calculate start date based on due date and term
+        const getStartDate = (dueDaysOffset: number, termDays: number) => {
+            const dueDate = getRelativeDate(dueDaysOffset);
+            const startDate = new Date(dueDate);
+            startDate.setDate(startDate.getDate() - termDays);
+            return startDate.toISOString();
+        };
+
         // Mock Seed Data
         const mockClients = [
             {
@@ -49,28 +72,77 @@ export function DemoWelcomeModal() {
                 notes: "",
                 createdAt: new Date().toISOString()
             },
+            {
+                id: "c-3",
+                name: "Carlos Souza",
+                email: "carlos@email.com",
+                phone: "11977777777",
+                status: "active",
+                cpf: "111.222.333-44",
+                address: "Rua das Flores, 789",
+                notes: "Novo cliente",
+                createdAt: new Date().toISOString()
+            },
         ];
 
         const mockLoans = [
+            // 1. Vence HOJE (0 dias)
             {
                 id: "l-1",
                 clientId: "c-1",
-                amount: 5000,
+                amount: 1000,
                 interestRate: 5,
-                startDate: new Date().toISOString(),
+                startDate: getStartDate(0, 30), // Vence hoje
                 status: "active",
                 termDays: 30,
                 createdAt: new Date().toISOString(),
                 paidDate: null
             },
+            // 2. Venceu ONTEM (-1 dia) -> Atrasado
             {
                 id: "l-2",
                 clientId: "c-2",
-                amount: 10000,
-                interestRate: 4,
-                startDate: new Date().toISOString(),
+                amount: 2000,
+                interestRate: 5,
+                startDate: getStartDate(-1, 30), // Venceu ontem
                 status: "active",
-                termDays: 60,
+                termDays: 30,
+                createdAt: new Date().toISOString(),
+                paidDate: null
+            },
+            // 3. Vence AMANHÃ (+1 dia) -> Futuro
+            {
+                id: "l-3",
+                clientId: "c-1",
+                amount: 1500,
+                interestRate: 5,
+                startDate: getStartDate(1, 30), // Vence amanhã
+                status: "active",
+                termDays: 30,
+                createdAt: new Date().toISOString(),
+                paidDate: null
+            },
+            // 4. Vence em 5 dias
+            {
+                id: "l-4",
+                clientId: "c-3",
+                amount: 3000,
+                interestRate: 5,
+                startDate: getStartDate(5, 30),
+                status: "active",
+                termDays: 30,
+                createdAt: new Date().toISOString(),
+                paidDate: null
+            },
+            // 5. Vence em 10 dias
+            {
+                id: "l-5",
+                clientId: "c-2",
+                amount: 5000,
+                interestRate: 5,
+                startDate: getStartDate(10, 30),
+                status: "active",
+                termDays: 30,
                 createdAt: new Date().toISOString(),
                 paidDate: null
             },
@@ -82,6 +154,7 @@ export function DemoWelcomeModal() {
         };
 
         localStorage.setItem("credimestre-db", JSON.stringify(dbData));
+        localStorage.setItem("startTour", "true");
 
         handleClose();
         window.location.reload();

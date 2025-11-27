@@ -17,6 +17,7 @@ export function DashboardCards({ data }: DashboardCardsProps) {
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <StatCard
+                id="tour-step-1"
                 title="Total Emprestado"
                 value={formatCurrency(data.totalLent)}
                 icon={Wallet}

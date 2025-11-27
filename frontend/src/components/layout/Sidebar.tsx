@@ -7,6 +7,8 @@ import {
     LogOut,
     Calculator,
     Trash2,
+    CalendarDays,
+    CalendarCheck2,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -29,8 +31,9 @@ const sidebarItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Users, label: "Clientes", href: "/clients" },
     { icon: Wallet, label: "Empréstimos", href: "/loans" },
+    { icon: CalendarDays, label: "Agenda", href: "/schedule" },
     { icon: Calculator, label: "Calculadora", href: "/calculator" },
-    { icon: Calendar, label: "Fechamento Mensal", href: "/close-month" },
+    { icon: CalendarCheck2, label: "Fechamento Mensal", href: "/close-month" },
 ];
 
 export function Sidebar() {
@@ -54,7 +57,11 @@ export function Sidebar() {
                     {sidebarItems.map((item) => {
                         const isActive = location.pathname.startsWith(item.href);
                         return (
-                            <Link key={item.href} to={item.href}>
+                            <Link
+                                key={item.href}
+                                to={item.href}
+                                id={item.label === "Agenda" ? "tour-step-3" : undefined}
+                            >
                                 <div className="relative px-4 py-3 group rounded-xl overflow-hidden transition-all duration-300 hover:bg-primary/5">
                                     {isActive && (
                                         <motion.div
@@ -92,6 +99,7 @@ export function Sidebar() {
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button
+                            id="tour-step-4"
                             variant="ghost"
                             className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors group mb-2"
                         >

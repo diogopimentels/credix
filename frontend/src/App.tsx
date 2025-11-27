@@ -9,6 +9,7 @@ import { ClientsPage } from "@/pages/ClientsPage"
 import { ClientDetailsPage } from "@/pages/ClientDetailsPage"
 import { LoansPage } from "@/pages/LoansPage"
 import { LoanDetailsPage } from "@/pages/LoanDetailsPage"
+import { SchedulePage } from "@/pages/SchedulePage"
 import { CloseMonthPage } from "@/pages/CloseMonthPage"
 import { CalculatorPage } from "@/pages/CalculatorPage"
 
@@ -31,6 +32,7 @@ function App() {
                         <Route path="clients/:id" element={<ClientDetailsPage />} />
                         <Route path="loans" element={<LoansPage />} />
                         <Route path="loans/:id" element={<LoanDetailsPage />} />
+                        <Route path="schedule" element={<SchedulePage />} />
                         <Route path="calculator" element={<CalculatorPage />} />
                         <Route path="close-month" element={<CloseMonthPage />} />
                     </Route>

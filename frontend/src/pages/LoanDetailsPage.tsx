@@ -10,6 +10,8 @@ import { PageHeader } from "@/components/ui/PageHeader"
 import { fetchJson } from "@/lib/api"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 import { PaymentDialog } from "@/components/loans/PaymentDialog"
+import { PromissoryNoteDialog } from "@/components/loans/PromissoryNoteDialog"
+import { FileText } from "lucide-react"
 
 interface EnhancedLoanDetails extends Loan {
     client: Client
@@ -173,10 +175,21 @@ export function LoanDetailsPage() {
                             </div>
                         </div>
                     </CardContent>
-                    <CardFooter className="pt-6">
+                    <CardFooter className="pt-6 flex flex-col sm:flex-row gap-3">
+                        <PromissoryNoteDialog loan={{
+                            ...loan,
+                            clientName: loan.client?.name,
+                            clientCpf: (loan.client as any)?.cpf || '000.000.000-00', // Mock if missing
+                            clientAddress: 'Endereço não cadastrado' // Mock
+                        }}>
+                            <Button variant="outline" className="w-full sm:w-auto" size="lg">
+                                <FileText className="mr-2 h-5 w-5" /> Gerar Promissória
+                            </Button>
+                        </PromissoryNoteDialog>
+
                         {loan.status !== 'PAID' && (
                             <PaymentDialog loan={loan} onSave={fetchLoan}>
-                                <Button className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" size="lg">
+                                <Button className="w-full sm:w-auto flex-1 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" size="lg">
                                     <CheckCircle2 className="mr-2 h-5 w-5" /> Registrar Pagamento
                                 </Button>
                             </PaymentDialog>

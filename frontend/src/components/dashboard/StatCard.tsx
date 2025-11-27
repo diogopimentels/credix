@@ -14,9 +14,10 @@ interface StatCardProps {
     };
     className?: string;
     delay?: number;
+    id?: string;
 }
 
-export function StatCard({ title, value, description, icon: Icon, trend, className, delay = 0 }: StatCardProps) {
+export function StatCard({ title, value, description, icon: Icon, trend, className, delay = 0, id }: StatCardProps) {
     return (
         <MobileAwareMotion
             initial={{ opacity: 0, y: 20 }}
@@ -24,7 +25,7 @@ export function StatCard({ title, value, description, icon: Icon, trend, classNa
             transition={{ duration: 0.4, delay }}
             disableOnMobile={true}
         >
-            <Card className={cn("overflow-hidden relative bg-card/50 backdrop-blur-sm min-w-0 w-full border-0", className)}>
+            <Card id={id} className={cn("overflow-hidden relative bg-card/50 backdrop-blur-sm min-w-0 w-full border-0", className)}>
                 <div className="absolute right-0 top-0 h-32 w-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full -mr-8 -mt-8" />
 
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">

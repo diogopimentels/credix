@@ -8,6 +8,8 @@ import {
     Calculator,
     LogOut,
     Trash2,
+    CalendarDays,
+    CalendarCheck2,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -51,8 +53,9 @@ export function MobileNav() {
     ];
 
     const menuItems = [
+        { icon: CalendarDays, label: "Agenda", href: "/schedule" },
         { icon: Calculator, label: "Calculadora", href: "/calculator" },
-        { icon: Calendar, label: "Fechamento Mensal", href: "/close-month" },
+        { icon: CalendarCheck2, label: "Fechamento Mensal", href: "/close-month" },
     ];
 
     return (
@@ -105,6 +108,7 @@ export function MobileNav() {
                             <Drawer key={index} open={menuOpen} onOpenChange={setMenuOpen}>
                                 <DrawerTrigger asChild>
                                     <button
+                                        id="tour-menu"
                                         className={cn(
                                             "flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors active:scale-95 touch-manipulation text-muted-foreground hover:text-foreground"
                                         )}
@@ -182,10 +186,15 @@ export function MobileNav() {
                     const isActive = location.pathname.startsWith(item.href);
                     const Icon = item.icon!;
 
+                    let tourId = undefined;
+                    if (item.label === "Clientes") tourId = "tour-clients";
+                    if (item.label === "Empréstimos") tourId = "tour-loans";
+
                     return (
                         <Link
                             key={index}
                             to={item.href}
+                            id={tourId}
                             className={cn(
                                 "flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors active:scale-95 touch-manipulation",
                                 isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"

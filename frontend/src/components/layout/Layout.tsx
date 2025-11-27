@@ -1,10 +1,25 @@
+import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { Sidebar } from "./Sidebar"
 import { Header } from "./Header"
 import { MobileNav } from "./MobileNav"
 import { DemoWelcomeModal } from "../common/DemoWelcomeModal"
+import { useProductTour } from "@/hooks/useProductTour"
 
 export function Layout() {
+    const { startTour } = useProductTour();
+
+    useEffect(() => {
+        const shouldStartTour = localStorage.getItem("startTour");
+        if (shouldStartTour === "true") {
+            localStorage.removeItem("startTour");
+            // Small delay to ensure everything is rendered
+            setTimeout(() => {
+                startTour();
+            }, 1000);
+        }
+    }, []);
+
     return (
         <div className="flex h-screen bg-background overflow-hidden">
             <DemoWelcomeModal />
